@@ -8,7 +8,12 @@
     "react": "^15.4.2",
     "react-d3": "^0.4.0",
     "react-d3-basic": "^1.6.11",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
+    "redux": "^3.6.0",
+    "redux-logger": "^2.8.2",
+    "redux-promise-middleware": "^4.2.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "react-scripts": "0.9.4"
