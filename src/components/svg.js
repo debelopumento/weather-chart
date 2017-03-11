@@ -1,25 +1,30 @@
 import React, {Component} from 'react'
 import * as d3 from 'd3'
 import axios from 'axios'
-import getCurrentWeather from '../actions/index'
+import {getCurrentWeather} from '../actions/index'
 import store from '../store'
 
-class Svg extends React.Component {
+class Svg extends Component {
   
   constructor(props) {
       super(props)
       this.state = {
           location: "San_Francisco",
-          startPoint: 18,
-          endPoint: 21
+          currentWeather: null,
+          historyWeather: null
       }
 
       store.subscribe(() => {
           this.setState({
-              startPoint: store.getState().startPoint,
-              endPoint: store.getState().endPoint
+              currentWeather: store.getState().currentWeather,
+              historyWeather: store.getState().historyWeather
           })
       })
+  }
+
+  fetchData(event) {
+    console.log(6)
+    store.dispatch(getCurrentWeather())
   }
 
   componentDidMount() {
@@ -37,20 +42,20 @@ class Svg extends React.Component {
         console.log(3, res.data)
         const data = res.data
         const data3 = [
-            {"temperature": parseInt(data.hourly_forecast[0].temp.english),
-             "time": parseInt(data.hourly_forecast[0].FCTTIME.hour)
+            {"temperature": Number(data.hourly_forecast[0].temp.english),
+             "time": Number(data.hourly_forecast[0].FCTTIME.hour)
             },
-            {"temperature": parseInt(data.hourly_forecast[1].temp.english),
-             "time": parseInt(data.hourly_forecast[1].FCTTIME.hour)
+            {"temperature": Number(data.hourly_forecast[1].temp.english),
+             "time": Number(data.hourly_forecast[1].FCTTIME.hour)
             },
-            {"temperature": parseInt(data.hourly_forecast[2].temp.english),
-             "time": parseInt(data.hourly_forecast[2].FCTTIME.hour)
+            {"temperature": Number(data.hourly_forecast[2].temp.english),
+             "time": Number(data.hourly_forecast[2].FCTTIME.hour)
             },
-            {"temperature": parseInt(data.hourly_forecast[3].temp.english),
-             "time": parseInt(data.hourly_forecast[3].FCTTIME.hour)
+            {"temperature": Number(data.hourly_forecast[3].temp.english),
+             "time": Number(data.hourly_forecast[3].FCTTIME.hour)
             },
-            {"temperature": parseInt(data.hourly_forecast[4].temp.english),
-             "time": parseInt(data.hourly_forecast[4].FCTTIME.hour)
+            {"temperature": Number(data.hourly_forecast[4].temp.english),
+             "time": Number(data.hourly_forecast[4].FCTTIME.hour)
             },
         ]
         const xScale = d3.scaleLinear().range([20, 480]).domain([17, 21])
@@ -103,8 +108,8 @@ class Svg extends React.Component {
     return (    
       <div>
         <svg id='visualisation' width={WIDTH} height={HEIGHT}>
-          
         </svg>
+        <input type='submit' value="clickMe" onClick={this.fetchData} />
       </div>
     )
   }

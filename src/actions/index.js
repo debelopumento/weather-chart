@@ -1,14 +1,17 @@
 import axios from 'axios'
 
 
-export const GET_CURRENT_WEATHER = 'GET_CURRENT_WEATHER'
+
+
+export const UPDATE_CURRENT_WEATHER = 'UPDATE_CURRENT_WEATHER'
 export const getCurrentWeather = () => {
 	return function(dispatch) {
-		axios.get('http://api.wunderground.com/api/515155f28af51941/hourly/q/CA/San_Francisco.json')
+		console.log(7)
+        axios.get('http://api.wunderground.com/api/515155f28af51941/hourly/q/CA/San_Francisco.json')
       	.then(function(res) {
         	console.log(3, res.data)
         	dispatch({
-        		type: GET_CURRENT_WEATHER,
+        		type: UPDATE_CURRENT_WEATHER,
         		payload: res.data
         	})
     	})

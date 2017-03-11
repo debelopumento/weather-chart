@@ -1,21 +1,27 @@
 import {combineReducers} from 'redux'
 
 const LocationReducer = (state="San_Francisco", action) => {
-	return state
+    return state
 }
 
-const StartPointReducer = (state=18, action) => {
-	return state
+const CurrentWeatherReducer = (state=null, action) => {
+    switch (action.type) {
+        case "UPDATE_CURRENT_WEATHER": {
+            return action.payload
+        }
+    }
+
+    return state
 }
 
-const EndPointReducer = (state=22, action) => {
-	return state
+const HistoryWeatherReducer = (state=null, action) => {
+    return state
 }
 
 const allReducers = combineReducers({
-	location: LocationReducer,
-	startPoint: StartPointReducer,
-	endPoint: EndPointReducer
+    location: LocationReducer,
+    currentWeather: CurrentWeatherReducer,
+    historyWeather: HistoryWeatherReducer
 })
 
 export default allReducers
