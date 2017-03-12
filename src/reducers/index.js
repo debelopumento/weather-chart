@@ -6,7 +6,7 @@ const LocationReducer = (state="San_Francisco", action) => {
 
 const CurrentWeatherReducer = (state=null, action) => {
     switch (action.type) {
-        case "UPDATE_CURRENT_WEATHER": {
+        case "GET_CURRENT_WEATHER": {
             return action.payload
         }
     }
