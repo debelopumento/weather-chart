@@ -59,26 +59,26 @@ class Svg extends Component {
         })
         */
         const currentWeatherData = [
-            {"temperature": parseInt(data.hourly_forecast[0].temp.english),
+            {"temperature": Number(data.hourly_forecast[0].temp.english),
              "time": (data.hourly_forecast[0].FCTTIME.hour)
             },
-            {"temperature": parseInt(data.hourly_forecast[1].temp.english),
+            {"temperature": Number(data.hourly_forecast[1].temp.english),
              "time": (data.hourly_forecast[1].FCTTIME.hour)
             },
-            {"temperature": parseInt(data.hourly_forecast[2].temp.english),
+            {"temperature": Number(data.hourly_forecast[2].temp.english),
              "time": (data.hourly_forecast[2].FCTTIME.hour)
             },
-            {"temperature": parseInt(data.hourly_forecast[3].temp.english),
+            {"temperature": Number(data.hourly_forecast[3].temp.english),
              "time": (data.hourly_forecast[3].FCTTIME.hour)
             },
-            {"temperature": parseInt(data.hourly_forecast[4].temp.english),
+            {"temperature": Number(data.hourly_forecast[4].temp.english),
              "time": (data.hourly_forecast[4].FCTTIME.hour)
             }
         ]
         console.log(21, currentWeatherData)
         const xScale = d3.scaleLinear().range([20, 480]).domain([currentWeatherData[0].time, currentWeatherData[4].time])
         const yScale = d3.scaleLinear().range([480, 20]).domain([40, 70])
-        //const xAxis = d3.axisBottom().scale(xScale).ticks(6)
+        const xAxis = d3.axisBottom().scale(xScale).ticks(6)
         const yAxis = d3.axisLeft().scale(yScale)
         const vis = d3.select("#visualisation")
         vis.append("rect")
@@ -86,25 +86,29 @@ class Svg extends Component {
             .attr("height", "100%")
             .attr("fill","lightgrey")
 
-        /*
+        // stand-in x axis
         vis.append("svg:g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
-                .call(xAxis);
-        */
+            .attr("class", "x axis")
+            .attr("transform", "translate(30," + (HEIGHT - MARGINS.bottom) + ")")
+            .call(xAxis);
+        //
 
-        
-        const eachScale = 180;
+        //draw x axis
+        const timezoneOffset = (new Date()).getTimezoneOffset() * 60000
+        console.log(6, timezoneOffset)
+        const now = new Date()
+        let today = now
+        today.setDate(now.getDate() - 0.29166666)
+        today = today.toISOString().slice(0, 19)
+        let tomorrow = now
+        tomorrow.setDate(now.getDate() + 1)
+        tomorrow = tomorrow.toISOString().slice(0, 19)
+        console.log(4, today, 5, tomorrow)
         let i = 0;
         let thisScale;
-        const timeFormat = d3.timeFormat('%Y-%m-%dT%H:%M:%S');
         const d3ParseScale = d3.scaleTime()
-            .domain([d3.timeParse('%Y-%m-%dT%H:%M:%S')('2016-03-08T12:00:00'), d3.timeParse('%Y-%m-%dT%H:%M:%S')('2016-03-09T00:00:00')])
+            .domain([d3.timeParse('%Y-%m-%dT%H:%M:%S')(today), d3.timeParse('%Y-%m-%dT%H:%M:%S')(tomorrow)])
             .range([40, 480]);
-
-        const explainer = function(scaleGroup, title, code, dateAssumptions, dateProduction, alert) {
-            const titleNum = '<tspan>' + '#' + (i + 1) + '</tspan> ';
-        };
 
         const drawScale = function(scale, dst) {
             const xAxis = d3.axisBottom(scale);
@@ -112,10 +116,12 @@ class Svg extends Component {
                 .attr('class', 'x axis')
                 .call(xAxis);
             return scaleGroup;
-        };
-        explainer(drawScale(d3ParseScale,[]));
+        }
 
+        drawScale(d3ParseScale,[]);
+        //
 
+        //draw y axis
         vis.append("svg:g")
                 .attr("class", "y axis")
                 .attr("transform", "translate(" + (MARGINS.left) + ",0)")
