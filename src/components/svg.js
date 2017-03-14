@@ -92,7 +92,7 @@ class Svg extends PureComponent {
             }
         ]
         console.log(21, currentWeatherData)
-        const xScale = d3.scaleLinear().range([20, 600]).domain([currentWeatherData[0].time, currentWeatherData[8].time])
+        const xScale = d3.scaleLinear().range([0, 550]).domain([currentWeatherData[0].time, currentWeatherData[8].time])
         
         const standinXaxis = d3.axisBottom().scale(xScale).ticks(7)
         
@@ -103,10 +103,12 @@ class Svg extends PureComponent {
             .attr("fill","lightgrey")
 
         // stand-in x axis
+        /*
         vis.append("svg:g")
             .attr("class", "x axis")
             .attr("transform", "translate(50, 300)")
             .call(standinXaxis);
+        */
         //
 
         //draw x axis
@@ -157,14 +159,7 @@ class Svg extends PureComponent {
               .attr('stroke', 'black')
               .attr("transform", "translate(50, 0)")
               .attr('stroke-width', 1)
-              .attr('fill', 'none');
-
-        vis.append('svg:dot')
-              .data(currentWeatherData)
-              .enter().append('circle')
-              .attr('r', 3.5)
-              .attr('cx', function(d) { return xScale(d.time)})
-              .attr('cy', function(d) { return yScale(d.temperature)})
+              .attr('fill', 'none')        
 
       })
 
