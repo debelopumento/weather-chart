@@ -1,20 +1,13 @@
-import React, { PureComponent, PropTypes } from 'react'
+import React, { PureComponent } from 'react'
 import * as d3 from 'd3'
-import { connect } from 'react-redux'
 import axios from 'axios'
 import {getCurrentWeather} from '../actions/actionIndex'
 import store from '../store'
 import * as actions from '../actions/actionIndex'
 
-const { object, func } = PropTypes
 
 
 class Svg extends PureComponent {
-  
-
-  fetchData(event) {
-    console.log(6, this.state)
-  }
 
 
   state = {
@@ -33,9 +26,7 @@ class Svg extends PureComponent {
             historyWeather: store.getState().historyWeather
         })
     })
-    console.log(8)
     store.dispatch(getCurrentWeather())
-    console.log(10)
   }
 
 
@@ -53,15 +44,7 @@ class Svg extends PureComponent {
     axios.get('http://api.wunderground.com/api/515155f28af51941/hourly/q/CA/San_Francisco.json')
       .then(function(res) {
         const data = res.data
-        /*        
-        const currentWeatherData = data.hourly_forecast.map(function(localTime) {
-          console.log(22, localTime)
-          return {
-            "temperature": Number(localTime.temp.english),
-            "time": Number(localTime.FCTTIME.hour) 
-          }
-        })
-        */
+        
         const currentWeatherData = [
             {"temperature": Number(data.hourly_forecast[0].temp.english),
              "time": 0
@@ -91,10 +74,18 @@ class Svg extends PureComponent {
              "time": 24
             }
         ]
-        console.log(21, currentWeatherData)
+
+        let index = 0
+        let currentWeatherData2 = []
+        currentWeatherData2.push({
+            "temperature": Number(data.hourly_forecast[index].temp.english),
+            "time": index
+        })
+        
+        console.log(21, currentWeatherData2)
         const xScale = d3.scaleLinear().range([0, 550]).domain([currentWeatherData[0].time, currentWeatherData[8].time])
         
-        const standinXaxis = d3.axisBottom().scale(xScale).ticks(7)
+        
         
         const vis = d3.select("#visualisation")
         vis.append("rect")
@@ -104,6 +95,7 @@ class Svg extends PureComponent {
 
         // stand-in x axis
         /*
+        const standinXaxis = d3.axisBottom().scale(xScale).ticks(7)
         vis.append("svg:g")
             .attr("class", "x axis")
             .attr("transform", "translate(50, 300)")
@@ -158,7 +150,7 @@ class Svg extends PureComponent {
               .attr('d', lineGen(currentWeatherData))
               .attr('stroke', 'black')
               .attr("transform", "translate(50, 0)")
-              .attr('stroke-width', 1)
+              .attr('stroke-width', 2)
               .attr('fill', 'none')        
 
       })
@@ -182,8 +174,6 @@ class Svg extends PureComponent {
         <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
 
         </svg>
-
-        <input type='submit' value="clickMe" onClick={this.fetchData} />
       </div>
     )
   }
