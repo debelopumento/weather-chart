@@ -6,7 +6,7 @@ const LocationReducer = (state="San_Francisco", action) => {
 
 const CurrentWeatherReducer = (state=null, action) => {
     switch (action.type) {
-        case "GET_CURRENT_WEATHER": {
+        case 'GET_CURRENT_WEATHER': {
             return action.payload
         }
     }
@@ -15,6 +15,11 @@ const CurrentWeatherReducer = (state=null, action) => {
 }
 
 const HistoryWeatherReducer = (state=null, action) => {
+    switch (action.type) {
+        case 'GET_HISTORY_WEATHER': {
+            return action.payload
+        }
+    }
     return state
 }
 
