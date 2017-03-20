@@ -35,6 +35,8 @@ class Svg extends PureComponent {
     }    
 
     if(this.props.currentData != null && this.props.historyData != null) {
+        
+        
         //time, start and end point of the timeline
         const now = new Date()
         let today = now
@@ -81,21 +83,6 @@ class Svg extends PureComponent {
         console.log(9, dataForRender)
         //
 
-        /* // backup
-         const currentData = this.props.currentData
-        let dataForRender = []
-        let index = 0
-        while (index <= 23) {
-          dataForRender.push({
-            'todaysTemperature': Number(currentData.hourly_forecast[index].temp.english),
-            'time': index
-          })
-          index++
-        }
-        console.log(10, dataForRender)
-        */
-
-
         //draw canvas
         const vis = d3.select("#visualisation")
         vis.append("rect")
@@ -104,20 +91,20 @@ class Svg extends PureComponent {
             .attr("fill","lightgrey")
         //
 
-
-        const xScale_current = d3.scaleLinear().range([0, WIDTH]).domain([dataForRender[0].time, dataForRender[23].time])
+        
+        const xScale_current = d3.scaleLinear().range([0, WIDTH-100]).domain([dataForRender[0].time, dataForRender[23].time])
         // stand-in x axis
         const standinXaxis = d3.axisBottom().scale(xScale_current).ticks(7)
         vis.append("svg:g")
             .attr("class", "x axis")
             .attr("transform", "translate(50, 300)")
-            .call(standinXaxis);
+            .call(standinXaxis)
         //
 
         //draw x axis
         const d3ParseScale = d3.scaleTime()
             .domain([d3.timeParse('%Y-%m-%dT%H:%M:%S')(today), d3.timeParse('%Y-%m-%dT%H:%M:%S')(tomorrow)])
-            .range([50, WIDTH]);
+            .range([50, WIDTH-50]);
         const drawScale = function(scale, dst) {
             const xAxis = d3.axisBottom(scale);
             const scaleGroup = vis.append('svg:g')
@@ -137,8 +124,8 @@ class Svg extends PureComponent {
               .attr("transform", "translate(50, 0)")
               .call(yAxis);
         
-        //draw path        
-        const lineGen = d3.line()
+        //draw paths       
+        const lineGen_current = d3.line()
               .x(function(d) {
                   return xScale_current(d.time);
               })
@@ -147,19 +134,60 @@ class Svg extends PureComponent {
               })
               .curve(d3.curveCardinal);
 
+        const lineGen_history = d3.line()
+              .x(function(d) {
+                  return xScale_current(d.time);
+              })
+              .y(function(d) {
+                  return yScale_current(d.historyTemperature);
+              })
+              .curve(d3.curveCardinal);
+
         vis.append('svg:path')
-              .attr('d', lineGen(dataForRender))
-              .attr('stroke', 'black')
+              .attr('d', lineGen_current(dataForRender))
+              .attr('stroke', 'orange')
               .attr("transform", "translate(50, 0)")
               .attr('stroke-width', 2)
-              .attr('fill', 'none')   
+              .attr('fill', 'none')
+
+        vis.append('svg:path')
+              .attr('d', lineGen_history(dataForRender))
+              .attr('stroke', 'blue')
+              .attr("transform", "translate(50, 0)")
+              .attr('stroke-width', 2)
+              .attr('fill', 'none')
 
 
+        //draw area
 
+        const x = d3.scaleLinear()
+              .range([0, WIDTH-100])
+              .domain([0, 23])
+
+        const y = d3.scaleLinear()
+              .range([380, 20])
+              .domain([40, 80])
+                    
+        const line = d3.area()
+              .x(function(d) { return x(d.time) })
+              .y1(function(d) { return y(d.historyTemperature) })
+              .y0(function(d) { return y(d.todaysTemperature) })
+              .curve(d3.curveCardinal)
+
+
+        vis.datum(dataForRender)
+
+        vis.append('path')
+              .attr('class', 'line')
+              .attr('d', line)
+              .attr('fill', 'rgba(0, 128, 0, 0.5)')
+              .attr("transform", "translate(50, 0)")        
 
         return (    
           <div>
             <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
+            </svg>
+            <svg id='visB' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
             </svg>
           </div>
         )
@@ -168,6 +196,9 @@ class Svg extends PureComponent {
             <div>
               <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
               </svg>
+              <svg id='visB' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
+              </svg>
+
             </div>
           )
         }
