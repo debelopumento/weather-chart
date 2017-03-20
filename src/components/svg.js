@@ -35,9 +35,9 @@ class Svg extends PureComponent {
     }    
 
     if(this.props.currentData != null) {
-        const currentData = this.props.currentData
-  
+        
         //convert raw currentData from API to currentWeatherData for display
+        const currentData = this.props.currentData
         let currentWeatherData = []
         let index = 0
         while (index <= 23) {
@@ -49,15 +49,18 @@ class Svg extends PureComponent {
         }
         //
 
-        const xScale = d3.scaleLinear().range([0, WIDTH]).domain([currentWeatherData[0].time, currentWeatherData[23].time])
+        //draw canvas
         const vis = d3.select("#visualisation")
         vis.append("rect")
             .attr("width", "100%")
             .attr("height", "100%")
             .attr("fill","lightgrey")
+        //
 
+
+        const xScale_current = d3.scaleLinear().range([0, WIDTH]).domain([currentWeatherData[0].time, currentWeatherData[23].time])
         // stand-in x axis
-        const standinXaxis = d3.axisBottom().scale(xScale).ticks(7)
+        const standinXaxis = d3.axisBottom().scale(xScale_current).ticks(7)
         vis.append("svg:g")
             .attr("class", "x axis")
             .attr("transform", "translate(50, 300)")
@@ -87,29 +90,40 @@ class Svg extends PureComponent {
         //
 
         //draw y axis
-        const yScale = d3.scaleLinear().range([380, 20]).domain([40, 80])
-        const yAxis = d3.axisLeft().scale(yScale)
+        const yScale_current = d3.scaleLinear().range([380, 20]).domain([40, 80])
+        const yAxis = d3.axisLeft().scale(yScale_current)
         vis.append("svg:g")
               .attr("class", "y axis")
               .attr("transform", "translate(50, 0)")
               .call(yAxis);
         
         //draw path        
-        const lineGen = d3.line()
+        const lineGen_current = d3.line()
               .x(function(d) {
-                  return xScale(d.time);
+                  return xScale_current(d.time);
               })
               .y(function(d) {
-                  return yScale(d.temperature);
+                  return yScale_current(d.temperature);
               })
               .curve(d3.curveCardinal);
 
         vis.append('svg:path')
-              .attr('d', lineGen(currentWeatherData))
+              .attr('d', lineGen_current(currentWeatherData))
               .attr('stroke', 'black')
               .attr("transform", "translate(50, 0)")
               .attr('stroke-width', 2)
               .attr('fill', 'none')   
+
+              /*
+              let hourNow = now.slice(16, 18)
+              //format current hour
+              if (Number(hourNow) < 10) {
+                  hourNow = Number(now.slice(17, 18))
+              } else {
+                  hourNow = Number(hourNow)
+              }
+              */
+
 
         return (    
           <div>

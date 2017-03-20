@@ -9,9 +9,9 @@ const CurrentWeatherReducer = (state=null, action) => {
         case 'GET_CURRENT_WEATHER': {
             return action.payload
         }
+        default: return state
     }
 
-    return state
 }
 
 const HistoryWeatherReducer = (state=null, action) => {
@@ -19,8 +19,8 @@ const HistoryWeatherReducer = (state=null, action) => {
         case 'GET_HISTORY_WEATHER': {
             return action.payload
         }
+        default: return state
     }
-    return state
 }
 
 const allReducers = combineReducers({
