@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-
 export const GET_CURRENT_WEATHER = 'GET_CURRENT_WEATHER'
 export const getCurrentWeather = () => {
 	return function(dispatch) {
