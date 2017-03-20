@@ -1,36 +1,32 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
+import { connect } from 'react-redux'
+
 import * as d3 from 'd3'
-import axios from 'axios'
-import {getCurrentWeather} from '../actions/actionIndex'
-import store from '../store'
 import * as actions from '../actions/actionIndex'
 
 
+const { object, func} = PropTypes
 
 class Svg extends PureComponent {
 
-
-  state = {
-      location: "San_Francisco",
-      currentWeather: null,
-      historyWeather: null
+  static PropTypes = {
+    data: object,
+    load: func
   }
 
-
+  static defaultProps = {
+    data: {},
+  }
 
   componentWillMount() {
-    
-    store.subscribe(() => {
-        this.setState({
-            currentWeather: store.getState().currentWeather,
-            historyWeather: store.getState().historyWeather
-        })
-    })
-    store.dispatch(getCurrentWeather())
+    this.props.load()
   }
 
-
   componentDidMount() {
+    console.log(11, this.props)
+  }
+
+  render() {
     const WIDTH = document.documentElement.clientWidth  
     const HEIGHT = 400
     const MARGINS = {
@@ -38,13 +34,10 @@ class Svg extends PureComponent {
       right: 20,
       bottom: 20,
       left: 50
-    }
-    
+    }    
 
-    axios.get('http://api.wunderground.com/api/515155f28af51941/hourly/q/CA/San_Francisco.json')
-      .then(function(res) {
-        const data = res.data
-        
+    if(this.props.data != null) {
+        const data = this.props.data
         const currentWeatherData = [
             {"temperature": Number(data.hourly_forecast[0].temp.english),
              "time": 0
@@ -151,33 +144,33 @@ class Svg extends PureComponent {
               .attr('stroke', 'black')
               .attr("transform", "translate(50, 0)")
               .attr('stroke-width', 2)
-              .attr('fill', 'none')        
+              .attr('fill', 'none')   
 
-      })
+        return (    
+          <div>
+            <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
+            </svg>
+          </div>
+        )
+      } else {
+          return (    
+            <div>
+              <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
 
-  }
-
-  render() {
-    const WIDTH = document.documentElement.clientWidth  
-    const HEIGHT = 400
-    const MARGINS = {
-      top: 20,
-      right: 20,
-      bottom: 20,
-      left: 50
-    }
-    console.log(12, this.state)
+              </svg>
+            </div>
+          )
+        }
     
-
-    return (    
-      <div>
-        <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
-
-        </svg>
-      </div>
-    )
   }
 }
 
 
-export default Svg
+export default connect(
+  storeState => ({
+    data: storeState.currentWeather,
+  }),
+  {
+    load: actions.getCurrentWeather,
+  }
+)(Svg) 
