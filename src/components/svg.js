@@ -55,8 +55,6 @@ class Svg extends PureComponent {
 
         console.log(1, now, 2, today, 3, tomorrow, 4, todayStartHour, 5, tomorrowEndHour)
         
-
-
         //convert raw currentData from API to dataForRender for display
         let dataForRender = []
         let j = todayStartHour
@@ -92,9 +90,9 @@ class Svg extends PureComponent {
         //
 
         
-        const xScale_current = d3.scaleLinear().range([0, WIDTH-100]).domain([dataForRender[0].time, dataForRender[23].time])
+        const xScale = d3.scaleLinear().range([0, WIDTH-100]).domain([dataForRender[0].time, dataForRender[23].time])
         // stand-in x axis
-        const standinXaxis = d3.axisBottom().scale(xScale_current).ticks(7)
+        const standinXaxis = d3.axisBottom().scale(xScale).ticks(7)
         vis.append("svg:g")
             .attr("class", "x axis")
             .attr("transform", "translate(50, 300)")
@@ -117,8 +115,8 @@ class Svg extends PureComponent {
         //
 
         //draw y axis
-        const yScale_current = d3.scaleLinear().range([380, 20]).domain([40, 80])
-        const yAxis = d3.axisLeft().scale(yScale_current)
+        const yScale = d3.scaleLinear().range([380, 20]).domain([40, 80])
+        const yAxis = d3.axisLeft().scale(yScale)
         vis.append("svg:g")
               .attr("class", "y axis")
               .attr("transform", "translate(50, 0)")
@@ -127,19 +125,19 @@ class Svg extends PureComponent {
         //draw paths       
         const lineGen_current = d3.line()
               .x(function(d) {
-                  return xScale_current(d.time);
+                  return xScale(d.time);
               })
               .y(function(d) {
-                  return yScale_current(d.todaysTemperature);
+                  return yScale(d.todaysTemperature);
               })
               .curve(d3.curveCardinal);
 
         const lineGen_history = d3.line()
               .x(function(d) {
-                  return xScale_current(d.time);
+                  return xScale(d.time);
               })
               .y(function(d) {
-                  return yScale_current(d.historyTemperature);
+                  return yScale(d.historyTemperature);
               })
               .curve(d3.curveCardinal);
 
@@ -159,21 +157,12 @@ class Svg extends PureComponent {
 
 
         //draw area
-
-        const x = d3.scaleLinear()
-              .range([0, WIDTH-100])
-              .domain([0, 23])
-
-        const y = d3.scaleLinear()
-              .range([380, 20])
-              .domain([40, 80])
                     
         const line = d3.area()
-              .x(function(d) { return x(d.time) })
-              .y1(function(d) { return y(d.historyTemperature) })
-              .y0(function(d) { return y(d.todaysTemperature) })
+              .x(function(d) { return xScale(d.time) })
+              .y1(function(d) { return yScale(d.historyTemperature) })
+              .y0(function(d) { return yScale(d.todaysTemperature) })
               .curve(d3.curveCardinal)
-
 
         vis.datum(dataForRender)
 
@@ -181,7 +170,7 @@ class Svg extends PureComponent {
               .attr('class', 'line')
               .attr('d', line)
               .attr('fill', 'rgba(0, 128, 0, 0.5)')
-              .attr("transform", "translate(50, 0)")        
+              .attr('transform', 'translate(50, 0)')        
 
         return (    
           <div>
