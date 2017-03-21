@@ -122,7 +122,7 @@ class Svg extends PureComponent {
               .attr("transform", "translate(50, 0)")
               .call(yAxis);
         
-        //draw paths       
+        //create path drawers      
         const lineGen_current = d3.line()
               .x(function(d) {
                   return xScale(d.time);
@@ -141,12 +141,53 @@ class Svg extends PureComponent {
               })
               .curve(d3.curveCardinal);
 
-        vis.append('svg:path')
-              .attr('d', lineGen_current(dataForRender))
-              .attr('stroke', 'orange')
-              .attr("transform", "translate(50, 0)")
-              .attr('stroke-width', 2)
-              .attr('fill', 'none')
+        
+
+        //draw difference                    
+        const line = d3.area()
+              .x(function(d) { return xScale(d.time) })
+              .y(function(d) { return yScale(d.historyTemperature) })
+              .curve(d3.curveCardinal)
+
+        const area = d3.area()
+              .x(function(d) { return xScale(d.time) })
+              .y1(function(d) { return yScale(d.todaysTemperature) })
+              .curve(d3.curveCardinal)
+
+        
+        vis.datum(dataForRender)
+
+
+        
+
+        //draw difference
+        vis.append('clipPath')
+              .attr('id', 'clip-below')
+              .append('path')
+              .attr('d', area.y0(HEIGHT))
+
+        vis.append('clipPath')
+              .attr('id', 'clip-above')
+              .append('path')
+              .attr('d', area.y0(0))
+
+        vis.append('path')
+              .attr('clip-path', 'url(#clip-above)')
+              .attr('d', area.y0(function(d) { return yScale(d.historyTemperature) }))
+              .attr('transform', 'translate(50, 0)')
+              .attr('fill', 'rgba(0, 128, 0, 0.5)')
+
+        vis.append('path')
+              .attr('clip-path', 'url(#clip-below)')
+              .attr('d', area)
+              .attr('transform', 'translate(50, 0)')
+              .attr('fill', 'rgba(128, 0, 0, 0.5)')
+
+        vis.append('path')
+              .attr('class', 'line')
+              .attr('d', line)
+
+
 
         vis.append('svg:path')
               .attr('d', lineGen_history(dataForRender))
@@ -156,21 +197,23 @@ class Svg extends PureComponent {
               .attr('fill', 'none')
 
 
+        //draw paths
+        vis.append('path')
+              .attr('d', lineGen_current(dataForRender))
+              .attr('stroke', 'black')
+              .attr("transform", "translate(50, 0)")
+              .attr('stroke-width', 2)
+              .attr('fill', 'none')
+
+        /*
         //draw area
-                    
-        const line = d3.area()
-              .x(function(d) { return xScale(d.time) })
-              .y1(function(d) { return yScale(d.historyTemperature) })
-              .y0(function(d) { return yScale(d.todaysTemperature) })
-              .curve(d3.curveCardinal)
-
-        vis.datum(dataForRender)
-
         vis.append('path')
               .attr('class', 'line')
               .attr('d', line)
               .attr('fill', 'rgba(0, 128, 0, 0.5)')
-              .attr('transform', 'translate(50, 0)')        
+              .attr('transform', 'translate(50, 0)')
+        */
+
 
         return (    
           <div>
