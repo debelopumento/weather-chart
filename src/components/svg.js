@@ -70,16 +70,25 @@ class Svg extends PureComponent {
         let k = 0
         for (let index=0; index <= 23; index++) {
           if (j <= 23) {
+            //validate history temperature data. if missing, replace it with the data of last element in array
+            let historyTemperature = Number(this.props.historyData.todayInHistory.history.observations[j].tempi)
+            if (historyTemperature < 0) {
+              historyTemperature = Number(this.props.historyData.todayInHistory.history.observations[j-1].tempi)
+            }
             dataForRender.push({
               'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
-              'historyTemperature': Number(this.props.historyData.todayInHistory.history.observations[j].tempi),
+              'historyTemperature': historyTemperature,
               'time': index
             })
             j++
           } else if (k <= tomorrowEndHour) {
+            let historyTemperature = Number(this.props.historyData.tomorrowInHistory.history.observations[k].tempi)
+            if (historyTemperature < 0) {
+              historyTemperature = Number(this.props.historyData.tomorrowInHistory.history.observations[k-1].tempi)
+            }
             dataForRender.push({
               'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
-              'historyTemperature': Number(this.props.historyData.tomorrowInHistory.history.observations[k].tempi),
+              'historyTemperature': historyTemperature,
               'time': index
             })
             k++

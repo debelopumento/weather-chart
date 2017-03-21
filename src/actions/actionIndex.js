@@ -57,9 +57,10 @@ export const getHistoryWeather = () => {
                 formatedDate = date.toString()
             }
             return formatedDate
-        }        
-        const todaysDateInHistory = '1997' + getMonthString(todaysMonth) + getDateString(todaysDate)
-        const tomorrowsDateInHistory = '1997' + getMonthString(tomorrowsMonth) + getDateString(tomorrowsDate)
+        }
+        const year = '1987'        
+        const todaysDateInHistory = year + getMonthString(todaysMonth) + getDateString(todaysDate)
+        const tomorrowsDateInHistory = year + getMonthString(tomorrowsMonth) + getDateString(tomorrowsDate)
         axios.get(`http://api.wunderground.com/api/515155f28af51941/history_${todaysDateInHistory}/q/CA/San_Francisco.json`)
         .then(function(resToday) {
             axios.get(`http://api.wunderground.com/api/515155f28af51941/history_${tomorrowsDateInHistory}/q/CA/San_Francisco.json`)
