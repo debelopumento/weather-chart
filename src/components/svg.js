@@ -2,6 +2,16 @@ import React, { PureComponent, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as d3 from 'd3'
 import * as actions from '../actions/actionIndex'
+import reactCSS from 'reactcss'
+
+const styles = reactCSS({
+  'default': {
+    svgMain: {
+      height: '280px',
+      marginBottom: '0',
+    }
+  }
+})
 
 const { object, func} = PropTypes
 
@@ -26,16 +36,15 @@ class Svg extends PureComponent {
 
   render() {
     const WIDTH = document.documentElement.clientWidth  
-    const HEIGHT = 400
+    const HEIGHT = 280
     const MARGINS = {
       top: 10,
-      right: 10,
+      right: 0,
       bottom: 10,
-      left: 10
+      left: 0
     }    
 
     if(this.props.currentData != null && this.props.historyData != null) {
-        
         
         //time, start and end point of the timeline
         const now = new Date()
@@ -74,53 +83,52 @@ class Svg extends PureComponent {
               'time': index
             })
             k++
-          }
-
-          
+          }          
         }
         console.log(9, dataForRender)
         //
 
-        //draw canvas
         const vis = d3.select("#visualisation")
-        vis.append("rect")
-            .attr("width", "100%")
-            .attr("height", "100%")
-            .attr("fill","lightgrey")
-        //
-
         
-        const xScale = d3.scaleLinear().range([0, WIDTH-100]).domain([dataForRender[0].time, dataForRender[23].time])
+        /*
         // stand-in x axis
         const standinXaxis = d3.axisBottom().scale(xScale).ticks(7)
         vis.append("svg:g")
             .attr("class", "x axis")
-            .attr("transform", "translate(50, 300)")
+            .attr("transform", "translate(50, 150)")
             .call(standinXaxis)
         //
+        */
 
         //draw x axis
+        const xScale = d3.scaleLinear().range([-20, WIDTH-50]).domain([dataForRender[0].time, dataForRender[23].time])
         const d3ParseScale = d3.scaleTime()
-            .domain([d3.timeParse('%Y-%m-%dT%H:%M:%S')(today), d3.timeParse('%Y-%m-%dT%H:%M:%S')(tomorrow)])
-            .range([50, WIDTH-50]);
+              .domain([d3.timeParse('%Y-%m-%dT%H:%M:%S')(today), d3.timeParse('%Y-%m-%dT%H:%M:%S')(tomorrow)])
+              .range([30, WIDTH]);
         const drawScale = function(scale, dst) {
             const xAxis = d3.axisBottom(scale);
             const scaleGroup = vis.append('svg:g')
-                .attr('class', 'x axis')
-                .attr("transform", "translate(0, 380)")
-                .call(xAxis);
+              .attr('class', 'axisLine')
+              .attr("transform", "translate(0, 250)")
+              .attr('stroke', 'white')
+              .attr('stroke-width', 0.5)
+              .call(xAxis)
+              
             return scaleGroup;
         }
         drawScale(d3ParseScale,[]);
         //
 
         //draw y axis
-        const yScale = d3.scaleLinear().range([380, 20]).domain([40, 80])
+        const yScale = d3.scaleLinear().range([250, 20]).domain([40, 80])
         const yAxis = d3.axisLeft().scale(yScale)
         vis.append("svg:g")
-              .attr("class", "y axis")
-              .attr("transform", "translate(50, 0)")
-              .call(yAxis);
+              .attr('class', 'axisLine')
+              .attr("transform", "translate(30, 0)")
+              .attr('stroke', 'white')
+              .attr('stroke-width', 0.5)
+              .call(yAxis)
+
         
         //create path drawers      
         const lineGen_current = d3.line()
@@ -153,14 +161,9 @@ class Svg extends PureComponent {
               .x(function(d) { return xScale(d.time) })
               .y1(function(d) { return yScale(d.todaysTemperature) })
               .curve(d3.curveCardinal)
-
         
         vis.datum(dataForRender)
 
-
-        
-
-        //draw difference
         vis.append('clipPath')
               .attr('id', 'clip-below')
               .append('path')
@@ -175,62 +178,50 @@ class Svg extends PureComponent {
               .attr('clip-path', 'url(#clip-above)')
               .attr('d', area.y0(function(d) { return yScale(d.historyTemperature) }))
               .attr('transform', 'translate(50, 0)')
-              .attr('fill', 'rgba(0, 128, 0, 0.5)')
+              .attr('fill', '#4eb7d5')
 
         vis.append('path')
               .attr('clip-path', 'url(#clip-below)')
               .attr('d', area)
               .attr('transform', 'translate(50, 0)')
-              .attr('fill', 'rgba(128, 0, 0, 0.5)')
+              .attr('fill', '#f34e54')
 
         vis.append('path')
               .attr('class', 'line')
               .attr('d', line)
 
-
-
-        vis.append('svg:path')
-              .attr('d', lineGen_history(dataForRender))
-              .attr('stroke', 'blue')
-              .attr("transform", "translate(50, 0)")
-              .attr('stroke-width', 2)
-              .attr('fill', 'none')
-
-
         //draw paths
+        ///current weather
         vis.append('path')
               .attr('d', lineGen_current(dataForRender))
-              .attr('stroke', 'black')
+              .attr('class', 'currentWeatherLine')
+              .attr('stroke', '#41b7c0')
               .attr("transform", "translate(50, 0)")
               .attr('stroke-width', 2)
               .attr('fill', 'none')
 
         /*
-        //draw area
-        vis.append('path')
-              .attr('class', 'line')
-              .attr('d', line)
-              .attr('fill', 'rgba(0, 128, 0, 0.5)')
-              .attr('transform', 'translate(50, 0)')
+        ///history weather
+        vis.append('svg:path')
+              .attr('d', lineGen_history(dataForRender))
+              .attr('stroke', '#41b7c0')
+              .attr("transform", "translate(50, 0)")
+              .attr('stroke-width', 2)
+              .attr('fill', 'none')
         */
 
-
         return (    
-          <div>
-            <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
+          <div style={ styles.svgMain } >
+            <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height='300'>
             </svg>
-            <svg id='visB' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
-            </svg>
+
           </div>
         )
       } else {
           return (    
-            <div>
-              <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
+            <div style={ styles.svgMain } >
+              <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height='300'>
               </svg>
-              <svg id='visB' width={WIDTH-MARGINS.right-MARGINS.left} height={HEIGHT}>
-              </svg>
-
             </div>
           )
         }

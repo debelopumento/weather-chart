@@ -1,0 +1,18 @@
+body {
+	width: 100%;
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+
+.hidden {
+	display: none;
+}
+
+line {
+	stroke: darkgrey;
+}
+
+.axisLine path {
+	stroke: darkgrey;
+}
