@@ -100,6 +100,8 @@ class Svg extends PureComponent {
         //
         */
 
+
+
         //draw x axis
         const xScale = d3.scaleLinear().range([-20, WIDTH-50]).domain([dataForRender[0].time, dataForRender[23].time])
         const d3ParseScale = d3.scaleTime()
@@ -119,8 +121,13 @@ class Svg extends PureComponent {
         drawScale(d3ParseScale,[]);
         //
 
+
+        //get lowest and highest temperature
+        const minTemperature = Math.min(d3.min(dataForRender, function(d) { return d.todaysTemperature }), d3.min(dataForRender, function(d) { return d.historyTemperature }))
+        const maxTemperature = Math.max(d3.max(dataForRender, function(d) { return d.todaysTemperature }), d3.max(dataForRender, function(d) { return d.historyTemperature }))
+
         //draw y axis
-        const yScale = d3.scaleLinear().range([250, 20]).domain([40, 80])
+        const yScale = d3.scaleLinear().range([250, 20]).domain([minTemperature - 2, maxTemperature + 2])
         const yAxis = d3.axisLeft().scale(yScale)
         vis.append("svg:g")
               .attr('class', 'axisLine')
