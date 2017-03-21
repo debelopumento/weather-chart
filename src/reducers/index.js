@@ -23,10 +23,21 @@ const HistoryWeatherReducer = (state=null, action) => {
     }
 }
 
+const TodaysSummaryReducer = (state=null, action) => {
+    switch (action.type) {
+        case 'GET_TODAYS_SUMMARY': {
+            return action.payload
+        }
+        default: return state
+    }
+}
+
 const allReducers = combineReducers({
     location: LocationReducer,
     currentWeather: CurrentWeatherReducer,
+    todaysSummary: TodaysSummaryReducer,
     historyWeather: HistoryWeatherReducer
+
 })
 
 export default allReducers

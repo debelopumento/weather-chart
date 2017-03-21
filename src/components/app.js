@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Svg from './svg'
 import Nav from './nav'
+import HistoryData from './historyData'
+import CurrentData from './currentData'
 import reactCSS from 'reactcss'
 
 const styles = reactCSS({
@@ -13,10 +15,10 @@ const styles = reactCSS({
       	paddingBottom: '0',
     },
     title: {
-    	paddingTop: '25px',
-    	marginTop: '0px',
-    	paddingBottom: '25px',
-    	borderBottom: '1px #0e4b51 solid'
+      	paddingTop: '25px',
+      	marginTop: '0px',
+      	paddingBottom: '25px',
+      	borderBottom: '1px #0e4b51 solid'
     }
   }
 })
@@ -28,10 +30,12 @@ class App extends Component {
       <div style={ styles.app } className="App">
         <Nav />
         <Svg />
-        
+        <HistoryData /><CurrentData />
       </div>
     );
   }
 }
 
 export default App;
+
+//<HistoryData />

@@ -1,5 +1,22 @@
 import axios from 'axios'
 
+
+export const GET_TODAYS_SUMMARY = 'GET_TODAYS_SUMMARY'
+export const getTodaysSummary = () => {
+    return function(dispatch) {
+        axios.get('http://api.wunderground.com/api/515155f28af51941/forecast/q/CA/San_Francisco.json')
+        .then(function(res) {
+            console.log(30, res)
+            dispatch({
+                type: GET_TODAYS_SUMMARY,
+                payload: res.data
+            })
+        })
+        .catch((e) => {console.error(413, 'Error: ', e)})
+    }
+}
+
+
 export const GET_CURRENT_WEATHER = 'GET_CURRENT_WEATHER'
 export const getCurrentWeather = () => {
 	return function(dispatch) {

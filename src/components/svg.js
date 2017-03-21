@@ -109,14 +109,12 @@ class Svg extends PureComponent {
               .range([30, WIDTH]);
         const drawScale = function(scale, dst) {
             const xAxis = d3.axisBottom(scale);
-            const scaleGroup = vis.append('svg:g')
+            vis.append('g')
               .attr('class', 'axisLine')
               .attr("transform", "translate(0, 250)")
               .attr('stroke', 'white')
-              .attr('stroke-width', 0.5)
+              .attr('stroke-width', 1)
               .call(xAxis)
-              
-            return scaleGroup;
         }
         drawScale(d3ParseScale,[]);
         //
@@ -133,7 +131,7 @@ class Svg extends PureComponent {
               .attr('class', 'axisLine')
               .attr("transform", "translate(30, 0)")
               .attr('stroke', 'white')
-              .attr('stroke-width', 0.5)
+              .attr('stroke-width', 1)
               .call(yAxis)
 
         
@@ -202,20 +200,19 @@ class Svg extends PureComponent {
         vis.append('path')
               .attr('d', lineGen_current(dataForRender))
               .attr('class', 'currentWeatherLine')
-              .attr('stroke', '#41b7c0')
+              .attr('stroke', '#ef4856')
               .attr("transform", "translate(50, 0)")
-              .attr('stroke-width', 2)
+              .attr('stroke-width', 3)
               .attr('fill', 'none')
 
-        /*
         ///history weather
-        vis.append('svg:path')
+        vis.append('path')
               .attr('d', lineGen_history(dataForRender))
-              .attr('stroke', '#41b7c0')
+              .attr('stroke', '#3ed3c7')
               .attr("transform", "translate(50, 0)")
-              .attr('stroke-width', 2)
+              .attr('stroke-width', 3)
               .attr('fill', 'none')
-        */
+        
 
         return (    
           <div style={ styles.svgMain } >
