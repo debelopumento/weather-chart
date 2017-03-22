@@ -41,7 +41,10 @@ class SelectYear extends PureComponent {
   }
 
   componentDidMount() {
-    //this.props.goToFollowingYear(1957)
+  }
+
+  componentWillReceiveProps() {
+    this.props.loadHistoryData(this.props.historyYear)
   }
 
   gotoNextYear(event) {    
