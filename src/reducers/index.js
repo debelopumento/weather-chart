@@ -32,8 +32,19 @@ const TodaysSummaryReducer = (state=null, action) => {
     }
 }
 
+const HistoryYearReducer = (state=1977, action) => {
+    switch (action.type) {
+        case 'GO_TO_FOLLOWING_YEAR': {
+            console.log(32, action.followingYear)
+            return action.followingYear
+        }
+        default: return state
+    }
+}
+
 const allReducers = combineReducers({
     location: LocationReducer,
+    historyYear: HistoryYearReducer,
     currentWeather: CurrentWeatherReducer,
     todaysSummary: TodaysSummaryReducer,
     historyWeather: HistoryWeatherReducer

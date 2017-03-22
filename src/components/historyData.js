@@ -1,6 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import * as actions from '../actions/actionIndex'
 import reactCSS from 'reactcss'
 
 const styles = reactCSS({
@@ -19,30 +18,24 @@ const styles = reactCSS({
   }
 })
 
-const { object, func} = PropTypes
+const { object } = PropTypes
 
 class HistoryData extends PureComponent {
 
   static PropTypes = {
-    currentData: object,
     historyData: object,
-    loadCurrentData: func,
-    loadHistoryData: func,
   }
 
   static defaultProps = {
-    currentData: {},
     historyData: {},
   }
 
   componentWillMount() {
-    this.props.loadCurrentData()
-    this.props.loadHistoryData()
   }
 
   render() {
 
-    if(this.props.currentData != null && this.props.historyData != null) {
+    if(this.props.historyData != null) {
         
         //time, start and end point of the timeline
         const now = new Date()
@@ -64,7 +57,6 @@ class HistoryData extends PureComponent {
         
         const historyYear = '1957'
         const todaysDateInHistory = today.slice(5, 7) + '-' + today.slice(8, 10) + '-' + historyYear
-        console.log(20, todaysDateInHistory)
 
         return (    
           <div style={ styles.historyData }>
@@ -85,12 +77,7 @@ class HistoryData extends PureComponent {
 
 export default connect(
   storeState => ({
-    currentData: storeState.currentWeather,
     historyData: storeState.historyWeather,
-  }),
-  {
-    loadCurrentData: actions.getCurrentWeather,
-    loadHistoryData: actions.getHistoryWeather,
-  }
+  })
 )(HistoryData) 
 

@@ -13,13 +13,14 @@ const styles = reactCSS({
   }
 })
 
-const { object, func} = PropTypes
+const { number, object, func} = PropTypes
 
 class Svg extends PureComponent {
 
   static PropTypes = {
     currentData: object,
     historyData: object,
+    historyYear: number,
     loadCurrentData: func,
     loadHistoryData: func,
   }
@@ -27,11 +28,12 @@ class Svg extends PureComponent {
   static defaultProps = {
     currentData: {},
     historyData: {},
+    historyYear: 1977
   }
 
   componentWillMount() {
     this.props.loadCurrentData()
-    this.props.loadHistoryData()
+    this.props.loadHistoryData(1997)
   }
 
   render() {
@@ -245,6 +247,7 @@ export default connect(
   storeState => ({
     currentData: storeState.currentWeather,
     historyData: storeState.historyWeather,
+    historyYear: storeState.historyYear,
   }),
   {
     loadCurrentData: actions.getCurrentWeather,

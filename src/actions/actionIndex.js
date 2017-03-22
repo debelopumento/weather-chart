@@ -1,12 +1,12 @@
 import axios from 'axios'
 
+const APIkey = 'c905350f371fe191'
 
 export const GET_TODAYS_SUMMARY = 'GET_TODAYS_SUMMARY'
 export const getTodaysSummary = () => {
     return function(dispatch) {
-        axios.get('http://api.wunderground.com/api/515155f28af51941/forecast/q/CA/San_Francisco.json')
+        axios.get(`http://api.wunderground.com/api/${APIkey}/forecast/q/CA/San_Francisco.json`)
         .then(function(res) {
-            console.log(30, res)
             dispatch({
                 type: GET_TODAYS_SUMMARY,
                 payload: res.data
@@ -20,9 +20,8 @@ export const getTodaysSummary = () => {
 export const GET_CURRENT_WEATHER = 'GET_CURRENT_WEATHER'
 export const getCurrentWeather = () => {
 	return function(dispatch) {
-        axios.get('http://api.wunderground.com/api/515155f28af51941/hourly/q/CA/San_Francisco.json')
+        axios.get(`http://api.wunderground.com/api/${APIkey}/hourly/q/CA/San_Francisco.json`)
       	.then(function(res) {
-            console.log(19, res)
             dispatch({
         		type: GET_CURRENT_WEATHER,
         		payload: res.data
@@ -33,7 +32,7 @@ export const getCurrentWeather = () => {
 }
 
 export const GET_HISTORY_WEATHER = 'GET_HISTORY_WEATHER'
-export const getHistoryWeather = () => {
+export const getHistoryWeather = (year) => {
     return function(dispatch) {
         const todaysMonth = (new Date()).getMonth() + 1
         const todaysDate = (new Date()).getDate()
@@ -58,12 +57,12 @@ export const getHistoryWeather = () => {
             }
             return formatedDate
         }
-        const year = '1987'        
+        //const year = '1957'        
         const todaysDateInHistory = year + getMonthString(todaysMonth) + getDateString(todaysDate)
         const tomorrowsDateInHistory = year + getMonthString(tomorrowsMonth) + getDateString(tomorrowsDate)
-        axios.get(`http://api.wunderground.com/api/515155f28af51941/history_${todaysDateInHistory}/q/CA/San_Francisco.json`)
+        axios.get(`http://api.wunderground.com/api/${APIkey}/history_${todaysDateInHistory}/q/CA/San_Francisco.json`)
         .then(function(resToday) {
-            axios.get(`http://api.wunderground.com/api/515155f28af51941/history_${tomorrowsDateInHistory}/q/CA/San_Francisco.json`)
+            axios.get(`http://api.wunderground.com/api/${APIkey}/history_${tomorrowsDateInHistory}/q/CA/San_Francisco.json`)
             .then(function(resTomorrow) {
                 const historyData = {
                     todayInHistory: resToday.data,
@@ -79,3 +78,17 @@ export const getHistoryWeather = () => {
         .catch((e) => {console.error(413, 'Error: ', e)})
     }
 }
+
+
+export const GO_TO_FOLLOWING_YEAR = 'GO_TO_FOLLOWING_YEAR'
+export const goToFollowingYear = (year) => {
+    return function(dispatch) {
+        const followingYear = year + 1
+        console.log(31, followingYear)
+        dispatch({
+            type: GO_TO_FOLLOWING_YEAR,
+            followingYear
+        })
+    }
+}
+

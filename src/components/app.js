@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import Svg from './svg'
 import Nav from './nav'
+import SelectYear from './selectYear'
 import HistoryData from './historyData'
 import CurrentData from './currentData'
 import reactCSS from 'reactcss'
@@ -30,6 +31,7 @@ class App extends Component {
       <div style={ styles.app } className="App">
         <Nav />
         <Svg />
+        <SelectYear />
         <HistoryData /><CurrentData />
       </div>
     );
@@ -38,4 +40,3 @@ class App extends Component {
 
 export default App;
 
-//<HistoryData />
