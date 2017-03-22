@@ -7,7 +7,7 @@ const styles = reactCSS({
   'default': {
     currentData: {
       float: 'left',
-      width: '49.5%',
+      width: '49.8%',
       marginBottom: '0',
       backgroundColor: '#ef4856',
     },

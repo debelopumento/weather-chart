@@ -6,7 +6,7 @@ const styles = reactCSS({
   'default': {
     historyData: {
       float: 'right',
-      width: '49.5%',
+      width: '49.8%',
       marginBottom: '0',
       backgroundColor: '#3ed3c7',
     },
@@ -44,19 +44,7 @@ class HistoryData extends PureComponent {
         let today = now
         today.setDate(now.getDate() - 0.29166666)
         today = today.toISOString().slice(0, 19)
-        let tomorrow = now
-        tomorrow.setDate(now.getDate() + 1)
-        tomorrow = tomorrow.toISOString().slice(0, 19)
-        const todayStartHour = Number(today.slice(11, 13)) + 1
-        let tomorrowEndHour = 0
-        if (todayStartHour >= 1) {
-          tomorrowEndHour = todayStartHour - 1
-        } else {
-          tomorrowEndHour = 23
-        }
-
-        console.log(1, now, 2, today, 3, tomorrow, 4, todayStartHour, 5, tomorrowEndHour)
-        
+                
         const historyYear = this.props.historyYear
         const todaysDateInHistory = today.slice(5, 7) + '-' + today.slice(8, 10) + '-' + historyYear
 

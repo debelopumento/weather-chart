@@ -33,7 +33,6 @@ class Svg extends PureComponent {
 
   componentWillMount() {
     this.props.loadCurrentData()
-    console.log(85, this.props.historyYear)
     this.props.loadHistoryData(this.props.historyYear)
   }
 
@@ -48,7 +47,7 @@ class Svg extends PureComponent {
     }    
 
     if(this.props.currentData != null && this.props.historyData != null) {
-        
+      
         //time, start and end point of the timeline
         const now = new Date()
         let today = now
@@ -64,8 +63,6 @@ class Svg extends PureComponent {
         } else {
           tomorrowEndHour = 23
         }
-
-        console.log(1, now, 2, today, 3, tomorrow, 4, todayStartHour, 5, tomorrowEndHour)
         
         //convert raw currentData from API to dataForRender for display
         let dataForRender = []
@@ -100,7 +97,9 @@ class Svg extends PureComponent {
         console.log(9, dataForRender)
         //
 
-        const vis = d3.select("#visualisation")
+        const svgElementId = '#' + this.props.historyYear.toString()
+        console.log(14, svgElementId)
+        const vis = d3.select('#visualization')
         
         /*
         // stand-in x axis
@@ -121,7 +120,7 @@ class Svg extends PureComponent {
               .range([30, WIDTH]);
         const drawScale = function(scale, dst) {
             const xAxis = d3.axisBottom(scale);
-            vis.append('g')
+            vis.append('svg:g')
               .attr('class', 'axisLine')
               .attr("transform", "translate(0, 250)")
               .attr('stroke', 'white')
@@ -228,15 +227,14 @@ class Svg extends PureComponent {
 
         return (    
           <div style={ styles.svgMain } >
-            <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height='300'>
+            <svg id='visualization' width={WIDTH-MARGINS.right-MARGINS.left} height='300'>
             </svg>
-
           </div>
         )
       } else {
           return (    
             <div style={ styles.svgMain } >
-              <svg id='visualisation' width={WIDTH-MARGINS.right-MARGINS.left} height='300'>
+              <svg id='visualization' width={WIDTH-MARGINS.right-MARGINS.left} height='300'>
               </svg>
             </div>
           )

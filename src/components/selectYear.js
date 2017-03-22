@@ -8,6 +8,7 @@ const styles = reactCSS({
   'default': {
     button: {
       color: 'orange',
+      fontSize: '16px',
     }
   }
 })
