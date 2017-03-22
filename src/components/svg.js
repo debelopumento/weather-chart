@@ -28,12 +28,12 @@ class Svg extends PureComponent {
   static defaultProps = {
     currentData: {},
     historyData: {},
-    historyYear: 1977
+    historyYear: 1997
   }
 
   componentWillMount() {
     this.props.loadCurrentData()
-    this.props.loadHistoryData(1997)
+    this.props.loadHistoryData(this.props.historyYear)
   }
 
   render() {
@@ -75,7 +75,8 @@ class Svg extends PureComponent {
             //validate history temperature data. if missing, replace it with the data of last element in array
             let historyTemperature = Number(this.props.historyData.todayInHistory.history.observations[j].tempi)
             if (historyTemperature < 0) {
-              historyTemperature = Number(this.props.historyData.todayInHistory.history.observations[j-1].tempi)
+              historyTemperature = Number(dataForRender[index-1].historyTemperature)
+              console.log(100, index, j)
             }
             dataForRender.push({
               'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
@@ -86,7 +87,8 @@ class Svg extends PureComponent {
           } else if (k <= tomorrowEndHour) {
             let historyTemperature = Number(this.props.historyData.tomorrowInHistory.history.observations[k].tempi)
             if (historyTemperature < 0) {
-              historyTemperature = Number(this.props.historyData.tomorrowInHistory.history.observations[k-1].tempi)
+              historyTemperature = Number(dataForRender[index-1].historyTemperature)
+              console.log(101, index, k)
             }
             dataForRender.push({
               'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
