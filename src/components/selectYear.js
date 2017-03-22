@@ -7,7 +7,7 @@ import store from '../store'
 const styles = reactCSS({
   'default': {
     button: {
-      color: 'white',
+      color: 'orange',
     }
   }
 })
@@ -21,12 +21,16 @@ class SelectYear extends PureComponent {
     this.state = {
       historyYear: 1977
     }
-    this.nextYear = this.nextYear.bind(this)
+    this.gotoNextYear = this.gotoNextYear.bind(this)
+    this.gotoTenYearsLater = this.gotoTenYearsLater.bind(this)
+    this.gotoLastYear = this.gotoLastYear.bind(this)
+    this.gotoTenYearsAgo = this.gotoTenYearsAgo.bind(this)
   }
 
   static PropTypes = {
     historyYear: object,
     goToFollowingYear: func,
+    loadHistoryData: func,
   }
 
   static defaultProps = {
@@ -40,21 +44,47 @@ class SelectYear extends PureComponent {
     //this.props.goToFollowingYear(1957)
   }
 
-  nextYear(event) {    
-    console.log(40, this.state.historyYear)
+  gotoNextYear(event) {    
     const nextYear = this.state.historyYear + 1
+    this.setState({historyYear: nextYear})
     store.dispatch({
-        type: 'GO_TO_FOLLOWING_YEAR',
-        followingYear: nextYear
+        type: 'UPDATE_HISTORY_YEAR',
+        historyYear: nextYear
     })
     
+  }
+  gotoTenYearsLater(event) {    
+    const tenYearsLater = this.state.historyYear + 10
+    this.setState({historyYear: tenYearsLater})
+    store.dispatch({
+        type: 'UPDATE_HISTORY_YEAR',
+        historyYear: tenYearsLater
+    })
+  }
+  gotoLastYear(event) {
+    const lastYear = this.state.historyYear - 1
+    this.setState({historyYear: lastYear})
+    store.dispatch({
+        type: 'UPDATE_HISTORY_YEAR',
+        historyYear: lastYear
+    })
+  }
+  gotoTenYearsAgo(event) {
+    const tenYearsAgo = this.state.historyYear - 10
+    this.setState({historyYear: tenYearsAgo})
+    store.dispatch({
+        type: 'UPDATE_HISTORY_YEAR',
+        historyYear: tenYearsAgo
+    })
   }
 
   render() {
 
     return (    
        <div>
-        <span> {this.props.historyYear} </span><span><input style={ styles.button } type='submit' value='>' onClick={this.nextYear}/></span>
+       <span><input style={ styles.button } type='submit' value='<<<' onClick={this.gotoTenYearsAgo}/></span>
+        <span><input style={ styles.button } type='submit' value='<' onClick={this.gotoLastYear}/></span>
+        <span style={ styles.button }> {this.props.historyYear} </span><span><input style={ styles.button } type='submit' value='>' onClick={this.gotoNextYear}/></span><span><input style={ styles.button } type='submit' value='>>>' onClick={this.gotoTenYearsLater}/></span>
       </div>
     )
       
@@ -66,7 +96,10 @@ export default connect(
     historyYear: storeState.historyYear,
   }),
   {
-    goToFollowingYear: actions.goToFollowingYear
+    gotoFollowingYear: actions.gotoFollowingYear,
+    gotoTenYearsLater: actions.gotoTenYearsLater,
+    gotoLastYear: actions.gotoLastYear,
+    loadHistoryData: actions.getHistoryWeather,
   }
 )(SelectYear) 
 

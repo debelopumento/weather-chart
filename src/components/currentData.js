@@ -48,9 +48,7 @@ class CurrentData extends PureComponent {
               
         const currentYear = '2017'
         const todaysDate = today.slice(5, 7) + '-' + today.slice(8, 10) + '-' + currentYear
-        
-        console.log (40, this.props.todaysSummary)
-
+      
         return (    
           <div style={ styles.currentData }>
             <h2>{todaysDate}</h2>

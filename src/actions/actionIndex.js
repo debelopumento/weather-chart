@@ -81,10 +81,10 @@ export const getHistoryWeather = (year) => {
 
 
 export const GO_TO_FOLLOWING_YEAR = 'GO_TO_FOLLOWING_YEAR'
-export const goToFollowingYear = (year) => {
+export const gotoFollowingYear = (year) => {
     return function(dispatch) {
         const followingYear = year + 1
-        console.log(31, followingYear)
+        console.log(71, followingYear)
         dispatch({
             type: GO_TO_FOLLOWING_YEAR,
             followingYear
@@ -92,3 +92,14 @@ export const goToFollowingYear = (year) => {
     }
 }
 
+export const GO_TO_TEN_YEARS_LATER = 'GO_TO_TEN_YEARS_LATER'
+export const gotoTenYearsLater = (year) => {
+    return function(dispatch) {
+        const tenYearsLater = year + 10
+        console.log(81, tenYearsLater)
+        dispatch({
+            type: GO_TO_TEN_YEARS_LATER,
+            tenYearsLater
+        })
+    }
+}

@@ -34,10 +34,11 @@ const TodaysSummaryReducer = (state=null, action) => {
 
 const HistoryYearReducer = (state=1977, action) => {
     switch (action.type) {
-        case 'GO_TO_FOLLOWING_YEAR': {
-            console.log(32, action.followingYear)
-            return action.followingYear
+        case 'UPDATE_HISTORY_YEAR': {
+            console.log(32, action.historyYear)
+            return action.historyYear
         }
+        
         default: return state
     }
 }

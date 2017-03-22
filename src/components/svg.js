@@ -76,7 +76,6 @@ class Svg extends PureComponent {
             let historyTemperature = Number(this.props.historyData.todayInHistory.history.observations[j].tempi)
             if (historyTemperature < 0) {
               historyTemperature = Number(dataForRender[index-1].historyTemperature)
-              console.log(100, index, j)
             }
             dataForRender.push({
               'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
@@ -88,7 +87,6 @@ class Svg extends PureComponent {
             let historyTemperature = Number(this.props.historyData.tomorrowInHistory.history.observations[k].tempi)
             if (historyTemperature < 0) {
               historyTemperature = Number(dataForRender[index-1].historyTemperature)
-              console.log(101, index, k)
             }
             dataForRender.push({
               'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
