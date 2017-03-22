@@ -5,7 +5,7 @@ import reactCSS from 'reactcss'
 const styles = reactCSS({
   'default': {
     historyData: {
-      float: 'left',
+      float: 'right',
       width: '49.5%',
       marginBottom: '0',
       backgroundColor: '#3ed3c7',
@@ -18,16 +18,18 @@ const styles = reactCSS({
   }
 })
 
-const { object } = PropTypes
+const { number, object } = PropTypes
 
 class HistoryData extends PureComponent {
 
   static PropTypes = {
     historyData: object,
+    historyYear: number,
   }
 
   static defaultProps = {
     historyData: {},
+    historyYear: 1977
   }
 
   componentWillMount() {
@@ -55,7 +57,7 @@ class HistoryData extends PureComponent {
 
         console.log(1, now, 2, today, 3, tomorrow, 4, todayStartHour, 5, tomorrowEndHour)
         
-        const historyYear = '1957'
+        const historyYear = this.props.historyYear
         const todaysDateInHistory = today.slice(5, 7) + '-' + today.slice(8, 10) + '-' + historyYear
 
         return (    
@@ -78,6 +80,7 @@ class HistoryData extends PureComponent {
 export default connect(
   storeState => ({
     historyData: storeState.historyWeather,
+    historyYear: storeState.historyYear,
   })
 )(HistoryData) 
 

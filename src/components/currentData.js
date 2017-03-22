@@ -6,7 +6,7 @@ import reactCSS from 'reactcss'
 const styles = reactCSS({
   'default': {
     currentData: {
-      float: 'right',
+      float: 'left',
       width: '49.5%',
       marginBottom: '0',
       backgroundColor: '#ef4856',

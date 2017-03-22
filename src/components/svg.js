@@ -33,6 +33,7 @@ class Svg extends PureComponent {
 
   componentWillMount() {
     this.props.loadCurrentData()
+    console.log(85, this.props.historyYear)
     this.props.loadHistoryData(this.props.historyYear)
   }
 

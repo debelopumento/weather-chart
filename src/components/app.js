@@ -32,7 +32,7 @@ class App extends Component {
         <Nav />
         <Svg />
         <SelectYear />
-        <HistoryData /><CurrentData />
+        <CurrentData /><HistoryData />
       </div>
     );
   }

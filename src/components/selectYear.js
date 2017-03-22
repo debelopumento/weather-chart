@@ -82,9 +82,11 @@ class SelectYear extends PureComponent {
 
     return (    
        <div>
-       <span><input style={ styles.button } type='submit' value='<<<' onClick={this.gotoTenYearsAgo}/></span>
+        <span><input style={ styles.button } type='submit' value='<<<' onClick={this.gotoTenYearsAgo}/></span>
         <span><input style={ styles.button } type='submit' value='<' onClick={this.gotoLastYear}/></span>
-        <span style={ styles.button }> {this.props.historyYear} </span><span><input style={ styles.button } type='submit' value='>' onClick={this.gotoNextYear}/></span><span><input style={ styles.button } type='submit' value='>>>' onClick={this.gotoTenYearsLater}/></span>
+        <span style={ styles.button }> {this.props.historyYear} </span>
+        <span><input style={ styles.button } type='submit' value='>' onClick={this.gotoNextYear}/></span>
+        <span><input style={ styles.button } type='submit' value='>>>' onClick={this.gotoTenYearsLater}/></span>
       </div>
     )
       
