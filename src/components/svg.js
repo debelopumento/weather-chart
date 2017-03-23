@@ -51,7 +51,7 @@ class Svg extends PureComponent {
         let tomorrow = now
         tomorrow.setDate(now.getDate() + 1)
         tomorrow = tomorrow.toISOString().slice(0, 19)
-        const todayStartHour = Number(today.slice(11, 13)) + 1
+        const todayStartHour = Number(today.slice(11, 13))
         let tomorrowEndHour = 0
         if (todayStartHour >= 1) {
           tomorrowEndHour = todayStartHour - 1
@@ -63,16 +63,23 @@ class Svg extends PureComponent {
         let dataForRender = []
         let j = todayStartHour
         let k = 0
-        console.log(1)
+        console.log(1, j)
         for (let index=0; index <= 23; index++) {
           if (j <= 23) {
             //validate history temperature data. if missing, replace it with the data of last element in array. If the first temperature in history is missing, replace it with the average temperature on that history day.
-            let historyTemperature = Number(this.props.historyData.todayInHistory.history.observations[j].tempi)
+            let historyTemperature = 0
+            if (this.props.historyData.todayInHistory.history.observations[j] === undefined) {
+              
+              historyTemperature = Math.round((Number((this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi)) + Number((this.props.historyData.todayInHistory.history.dailysummary[0].mintempi))) / 2)
+              console.log(400, index, 401, j, 402, historyTemperature, 403, this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi, 404, this.props.historyData.todayInHistory.history.dailysummary[0].mintempi)
+            } else {
+              historyTemperature = Number(this.props.historyData.todayInHistory.history.observations[j].tempi)
+            }
             if (historyTemperature < 0 && index >= 1) {
               historyTemperature = Number(dataForRender[index-1].historyTemperature)
             }
             else if (historyTemperature < 0 && index === 0) {
-              historyTemperature = Math.round(((this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi) + (this.props.historyData.todayInHistory.history.dailysummary[0].mintempi)) / 2)
+              historyTemperature = Math.round((Number((this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi)) + Number((this.props.historyData.todayInHistory.history.dailysummary[0].mintempi))) / 2)
             }
             dataForRender.push({
               'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
@@ -81,12 +88,17 @@ class Svg extends PureComponent {
             })
             j++
           } else if (k <= tomorrowEndHour) {
-            let historyTemperature = Number(this.props.historyData.tomorrowInHistory.history.observations[k].tempi)
+            let historyTemperature = 0
+            if (this.props.historyData.tomorrowInHistory.history.observations[k] === undefined) {
+              historyTemperature = Math.round((Number((this.props.historyData.tomorrowInHistory.history.dailysummary[0].maxtempi)) + Number((this.props.historyData.tomorrowInHistory.history.dailysummary[0].mintempi))) / 2)
+            } else {
+              historyTemperature = Number(this.props.historyData.tomorrowInHistory.history.observations[k].tempi)
+            }
             if (historyTemperature < 0 && index >= 1) {
               historyTemperature = Number(dataForRender[index-1].historyTemperature)
             }
             else if (historyTemperature < 0 && index === 0) {
-              historyTemperature = Math.round(((this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi) + (this.props.historyData.todayInHistory.history.dailysummary[0].mintempi)) / 2)
+              historyTemperature = Math.round((Number((this.props.historyData.tomorrowInHistory.history.dailysummary[0].maxtempi)) + Number((this.props.historyData.tomorrowInHistory.history.dailysummary[0].mintempi))) / 2)
             }
 
             dataForRender.push({
