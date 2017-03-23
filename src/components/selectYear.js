@@ -10,6 +10,8 @@ const styles = reactCSS({
       color: 'orange',
       fontSize: '16px',
       padding: '15px',
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      border: '0'
     }
   }
 })
