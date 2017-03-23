@@ -32,47 +32,66 @@ class SelectYear extends PureComponent {
     historyYear: 1977,
   }
 
-  componentWillReceiveProps() {
-    console.log(300, this.props.historyYear)
-    //this.props.loadHistoryData(this.props.historyYear)
+  validateYear = (year) => {
+    console.log('yea?')
+    if (year > 2016) {
+      alert('Please select a year prior to 2017!')
+      return false
+    }
+    else if (year < 1949) {
+      alert('Please select a year later than 1949!')
+      return false
+    }
+    else return true
   }
 
   gotoNextYear = () => {    
     const nextYear = this.state.historyYear + 1
-    this.setState({historyYear: nextYear})
-    store.dispatch({
-        type: 'UPDATE_HISTORY_YEAR',
-        historyYear: nextYear
-    })
-    this.props.loadHistoryData(nextYear)
-    
+    const valid = this.validateYear(nextYear)
+    if (valid === true) {
+      this.setState({historyYear: nextYear})
+      store.dispatch({
+          type: 'UPDATE_HISTORY_YEAR',
+          historyYear: nextYear
+      })
+      this.props.loadHistoryData(nextYear)
+    }
   }
   gotoTenYearsLater = () => {    
     const tenYearsLater = this.state.historyYear + 10
-    this.setState({historyYear: tenYearsLater})
-    store.dispatch({
-        type: 'UPDATE_HISTORY_YEAR',
-        historyYear: tenYearsLater
-    })
-    this.props.loadHistoryData(tenYearsLater)
+    const valid = this.validateYear(tenYearsLater)
+    if (valid === true) {
+      this.setState({historyYear: tenYearsLater})
+      store.dispatch({
+          type: 'UPDATE_HISTORY_YEAR',
+          historyYear: tenYearsLater
+      })
+      this.props.loadHistoryData(tenYearsLater)
+    }
   }
   gotoLastYear = () => {
     const lastYear = this.state.historyYear - 1
-    this.setState({historyYear: lastYear})
-    store.dispatch({
-        type: 'UPDATE_HISTORY_YEAR',
-        historyYear: lastYear
-    })
-    this.props.loadHistoryData(lastYear)
+    const valid = this.validateYear(lastYear)
+    if (valid === true) {
+      this.setState({historyYear: lastYear})
+      store.dispatch({
+          type: 'UPDATE_HISTORY_YEAR',
+          historyYear: lastYear
+      })
+      this.props.loadHistoryData(lastYear)
+    }
   }
   gotoTenYearsAgo = () => {
     const tenYearsAgo = this.state.historyYear - 10
-    this.setState({historyYear: tenYearsAgo})
-    store.dispatch({
-        type: 'UPDATE_HISTORY_YEAR',
-        historyYear: tenYearsAgo
-    })
-    this.props.loadHistoryData(tenYearsAgo)
+    const valid = this.validateYear(tenYearsAgo)
+    if (valid === true) {
+      this.setState({historyYear: tenYearsAgo})
+      store.dispatch({
+          type: 'UPDATE_HISTORY_YEAR',
+          historyYear: tenYearsAgo
+      })
+      this.props.loadHistoryData(tenYearsAgo)
+    }
   }
 
   render() {
