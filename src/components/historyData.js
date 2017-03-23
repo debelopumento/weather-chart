@@ -9,12 +9,16 @@ const styles = reactCSS({
       width: '49.8%',
       marginBottom: '0',
       backgroundColor: '#3ed3c7',
+      height: '240px',
+    },
+    container: {
+      float: 'top',
     },
     temperatureText: {
       fontSize: '50px',
       marginBottom: '20px',
-      marginTop: '5px',
-    }
+      marginTop: '2px',
+    },
   }
 })
 
@@ -50,9 +54,11 @@ class HistoryData extends PureComponent {
 
         return (    
           <div style={ styles.historyData }>
-            <h2>{todaysDateInHistory}</h2>
-            <h1 style={ styles.temperatureText }>{this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi}</h1>
-            <h1 style={ styles.temperatureText }>{this.props.historyData.todayInHistory.history.dailysummary[0].mintempi}</h1>
+            <div style={ styles.container }>
+              <h2>{todaysDateInHistory}</h2>
+              <h1 style={ styles.temperatureText }>{this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi}</h1>
+              <h1 style={ styles.temperatureText }>{this.props.historyData.todayInHistory.history.dailysummary[0].mintempi}</h1>
+            </div>
           </div>
         )
       } else {

@@ -10,7 +10,6 @@ const styles = reactCSS({
   'default': {
     app: {
       	height: '100%',
-      	backgroundColor: '#07263b',
       	textAlign: 'center',
       	color: 'white',
       	paddingBottom: '0',
