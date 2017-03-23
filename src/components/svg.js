@@ -36,15 +36,10 @@ class Svg extends PureComponent {
     this.props.loadHistoryData(this.props.historyYear)
   }
 
-  render() {
+  componentDidUpdate() {
+    
     const WIDTH = document.documentElement.clientWidth  
     const HEIGHT = 280
-    const MARGINS = {
-      top: 10,
-      right: 0,
-      bottom: 10,
-      left: 0
-    }    
 
     if(this.props.currentData != null && this.props.historyData != null) {
       
@@ -68,12 +63,16 @@ class Svg extends PureComponent {
         let dataForRender = []
         let j = todayStartHour
         let k = 0
+        console.log(1)
         for (let index=0; index <= 23; index++) {
           if (j <= 23) {
-            //validate history temperature data. if missing, replace it with the data of last element in array
+            //validate history temperature data. if missing, replace it with the data of last element in array. If the first temperature in history is missing, replace it with the average temperature on that history day.
             let historyTemperature = Number(this.props.historyData.todayInHistory.history.observations[j].tempi)
-            if (historyTemperature < 0) {
+            if (historyTemperature < 0 && index >= 1) {
               historyTemperature = Number(dataForRender[index-1].historyTemperature)
+            }
+            else if (historyTemperature < 0 && index === 0) {
+              historyTemperature = Math.round(((this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi) + (this.props.historyData.todayInHistory.history.dailysummary[0].mintempi)) / 2)
             }
             dataForRender.push({
               'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
@@ -83,9 +82,13 @@ class Svg extends PureComponent {
             j++
           } else if (k <= tomorrowEndHour) {
             let historyTemperature = Number(this.props.historyData.tomorrowInHistory.history.observations[k].tempi)
-            if (historyTemperature < 0) {
+            if (historyTemperature < 0 && index >= 1) {
               historyTemperature = Number(dataForRender[index-1].historyTemperature)
             }
+            else if (historyTemperature < 0 && index === 0) {
+              historyTemperature = Math.round(((this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi) + (this.props.historyData.todayInHistory.history.dailysummary[0].mintempi)) / 2)
+            }
+
             dataForRender.push({
               'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
               'historyTemperature': historyTemperature,
@@ -97,9 +100,8 @@ class Svg extends PureComponent {
         console.log(9, dataForRender)
         //
 
-        const svgElementId = '#' + this.props.historyYear.toString()
-        console.log(14, svgElementId)
-        const vis = d3.select('#visualization')
+        const vis = d3.select('#visulization')
+        vis.selectAll('*').remove()
         
         /*
         // stand-in x axis
@@ -110,8 +112,6 @@ class Svg extends PureComponent {
             .call(standinXaxis)
         //
         */
-
-
 
         //draw x axis
         const xScale = d3.scaleLinear().range([-20, WIDTH-50]).domain([dataForRender[0].time, dataForRender[23].time])
@@ -223,23 +223,27 @@ class Svg extends PureComponent {
               .attr("transform", "translate(50, 0)")
               .attr('stroke-width', 3)
               .attr('fill', 'none')
-        
 
-        return (    
-          <div style={ styles.svgMain } >
-            <svg id='visualization' width={WIDTH-MARGINS.right-MARGINS.left} height='300'>
-            </svg>
-          </div>
-        )
-      } else {
-          return (    
-            <div style={ styles.svgMain } >
-              <svg id='visualization' width={WIDTH-MARGINS.right-MARGINS.left} height='300'>
-              </svg>
-            </div>
-          )
-        }
+    }
   }
+
+  render() {
+    const WIDTH = document.documentElement.clientWidth  
+    const MARGINS = {
+      top: 10,
+      right: 0,
+      bottom: 10,
+      left: 0
+    }    
+   
+    return (    
+      <div style={ styles.svgMain } >
+        <svg id='visulization' width={WIDTH-MARGINS.right-MARGINS.left} height='300'>
+        </svg>
+      </div>
+    )
+  }
+        
 }
 
 export default connect(

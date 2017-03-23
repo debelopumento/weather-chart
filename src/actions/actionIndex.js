@@ -57,9 +57,10 @@ export const getHistoryWeather = (year) => {
             }
             return formatedDate
         }
-        //const year = '1957'        
+        console.log(199, year)
         const todaysDateInHistory = year + getMonthString(todaysMonth) + getDateString(todaysDate)
         const tomorrowsDateInHistory = year + getMonthString(tomorrowsMonth) + getDateString(tomorrowsDate)
+        console.log(200, todaysDateInHistory, 201, tomorrowsDateInHistory)
         axios.get(`http://api.wunderground.com/api/${APIkey}/history_${todaysDateInHistory}/q/CA/San_Francisco.json`)
         .then(function(resToday) {
             axios.get(`http://api.wunderground.com/api/${APIkey}/history_${tomorrowsDateInHistory}/q/CA/San_Francisco.json`)

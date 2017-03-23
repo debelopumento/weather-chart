@@ -9,6 +9,7 @@ const styles = reactCSS({
     button: {
       color: 'orange',
       fontSize: '16px',
+      padding: '15px',
     }
   }
 })
@@ -17,15 +18,8 @@ const { object, func} = PropTypes
 
 class SelectYear extends PureComponent {
 
-  constructor() {
-    super()
-    this.state = {
-      historyYear: 1977
-    }
-    this.gotoNextYear = this.gotoNextYear.bind(this)
-    this.gotoTenYearsLater = this.gotoTenYearsLater.bind(this)
-    this.gotoLastYear = this.gotoLastYear.bind(this)
-    this.gotoTenYearsAgo = this.gotoTenYearsAgo.bind(this)
+  state = {
+    historyYear: 1977
   }
 
   static PropTypes = {
@@ -38,48 +32,47 @@ class SelectYear extends PureComponent {
     historyYear: 1977,
   }
 
-  componentWillMount() {
-  }
-
-  componentDidMount() {
-  }
-
   componentWillReceiveProps() {
-    this.props.loadHistoryData(this.props.historyYear)
+    console.log(300, this.props.historyYear)
+    //this.props.loadHistoryData(this.props.historyYear)
   }
 
-  gotoNextYear(event) {    
+  gotoNextYear = () => {    
     const nextYear = this.state.historyYear + 1
     this.setState({historyYear: nextYear})
     store.dispatch({
         type: 'UPDATE_HISTORY_YEAR',
         historyYear: nextYear
     })
+    this.props.loadHistoryData(nextYear)
     
   }
-  gotoTenYearsLater(event) {    
+  gotoTenYearsLater = () => {    
     const tenYearsLater = this.state.historyYear + 10
     this.setState({historyYear: tenYearsLater})
     store.dispatch({
         type: 'UPDATE_HISTORY_YEAR',
         historyYear: tenYearsLater
     })
+    this.props.loadHistoryData(tenYearsLater)
   }
-  gotoLastYear(event) {
+  gotoLastYear = () => {
     const lastYear = this.state.historyYear - 1
     this.setState({historyYear: lastYear})
     store.dispatch({
         type: 'UPDATE_HISTORY_YEAR',
         historyYear: lastYear
     })
+    this.props.loadHistoryData(lastYear)
   }
-  gotoTenYearsAgo(event) {
+  gotoTenYearsAgo = () => {
     const tenYearsAgo = this.state.historyYear - 10
     this.setState({historyYear: tenYearsAgo})
     store.dispatch({
         type: 'UPDATE_HISTORY_YEAR',
         historyYear: tenYearsAgo
     })
+    this.props.loadHistoryData(tenYearsAgo)
   }
 
   render() {
