@@ -132,7 +132,7 @@ class ComparativeD3Graph extends PureComponent {
               .range([30, WIDTH]);
         const drawScale = function(scale, dst) {
             const xAxis = d3.axisBottom(scale);
-            vis.append('svg:g')
+            vis.append('g')
               .attr('class', 'axisLine')
               .attr("transform", "translate(0, 250)")
               .attr('stroke', 'white')
@@ -150,7 +150,7 @@ class ComparativeD3Graph extends PureComponent {
         //draw y axis
         const yScale = d3.scaleLinear().range([250, 20]).domain([minTemperature - 2, maxTemperature + 2])
         const yAxis = d3.axisLeft().scale(yScale)
-        vis.append("svg:g")
+        vis.append("g")
               .attr('class', 'axisLine')
               .attr("transform", "translate(30, 0)")
               .attr('stroke', 'white')
@@ -176,8 +176,6 @@ class ComparativeD3Graph extends PureComponent {
                   return yScale(d.historyTemperature);
               })
               .curve(d3.curveCardinal);
-
-        
 
         //draw difference                    
         const line = d3.area()
@@ -206,13 +204,13 @@ class ComparativeD3Graph extends PureComponent {
               .attr('clip-path', 'url(#clip-above)')
               .attr('d', area.y0(function(d) { return yScale(d.historyTemperature) }))
               .attr('transform', 'translate(50, 0)')
-              .attr('fill', '#4eb7d5')
+              .attr('fill', 'rgba(78, 183, 213, 0.8)')
 
         vis.append('path')
               .attr('clip-path', 'url(#clip-below)')
               .attr('d', area)
               .attr('transform', 'translate(50, 0)')
-              .attr('fill', '#f34e54')
+              .attr('fill', 'rgba(243, 78, 84, 0.85)')
 
         vis.append('path')
               .attr('class', 'line')

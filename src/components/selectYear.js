@@ -2,16 +2,16 @@ import React, { PureComponent, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions/actionIndex'
 import reactCSS from 'reactcss'
-import store from '../store'
 
 const styles = reactCSS({
   'default': {
     button: {
       color: 'orange',
-      fontSize: '16px',
-      padding: '15px',
+      fontSize: 23,
+      padding: 15,
       backgroundColor: 'rgba(0, 0, 0, 0)',
-      border: '0'
+      border: 0,
+      paddingTop: 5,
     }
   }
 })

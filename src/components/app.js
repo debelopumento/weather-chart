@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import ComparativeD3Graph from './comparativeD3Graph'
 import Nav from './nav'
 import SelectYear from './selectYear'

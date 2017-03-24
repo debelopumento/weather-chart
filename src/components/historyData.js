@@ -16,7 +16,7 @@ const styles = reactCSS({
     },
     temperatureText: {
       fontSize: 50,
-      marginBottom: 20,
+      marginBottom: 10,
       marginTop: 2,
     },
   }

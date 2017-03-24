@@ -6,6 +6,10 @@ html, body {
 	background-color: #07263b;
 }
 
+body {
+	margin: 0;
+}
+
 
 .hidden {
 	display: none;
