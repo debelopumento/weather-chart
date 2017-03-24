@@ -64,31 +64,15 @@ export const getHistoryWeather = year => {
                     payload: historyData
                 })
             })
-            
         })
         .catch((e) => {console.error(413, 'Error: ', e)})
     }
 }
 
-
-export const GO_TO_FOLLOWING_YEAR = 'GO_TO_FOLLOWING_YEAR'
-export const gotoFollowingYear = year => {
-    return dispatch => {
-        const followingYear = year + 1
-        dispatch({
-            type: GO_TO_FOLLOWING_YEAR,
-            followingYear
-        })
-    }
-}
-
-export const GO_TO_TEN_YEARS_LATER = 'GO_TO_TEN_YEARS_LATER'
-export const gotoTenYearsLater = year => {
-    return dispatch => {
-        const tenYearsLater = year + 10
-        dispatch({
-            type: GO_TO_TEN_YEARS_LATER,
-            tenYearsLater
-        })
+export const UPDATE_HISTORY_YEAR = 'UPDATE_HISTORY_YEAR'
+export const updateHistoryYear = year => {
+    return {
+      type: UPDATE_HISTORY_YEAR,
+      historyYear: year
     }
 }

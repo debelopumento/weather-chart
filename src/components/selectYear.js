@@ -35,7 +35,6 @@ class SelectYear extends PureComponent {
   }
 
   validateYear = (year) => {
-    console.log('yea?')
     if (year > 2016) {
       alert('Please select a year prior to 2017!')
       return false
@@ -52,10 +51,7 @@ class SelectYear extends PureComponent {
     const valid = this.validateYear(nextYear)
     if (valid === true) {
       this.setState({historyYear: nextYear})
-      store.dispatch({
-          type: 'UPDATE_HISTORY_YEAR',
-          historyYear: nextYear
-      })
+      this.props.updateHistoryYear(nextYear)
       this.props.loadHistoryData(nextYear)
     }
   }
@@ -64,10 +60,7 @@ class SelectYear extends PureComponent {
     const valid = this.validateYear(tenYearsLater)
     if (valid === true) {
       this.setState({historyYear: tenYearsLater})
-      store.dispatch({
-          type: 'UPDATE_HISTORY_YEAR',
-          historyYear: tenYearsLater
-      })
+      this.props.updateHistoryYear(tenYearsLater)
       this.props.loadHistoryData(tenYearsLater)
     }
   }
@@ -76,10 +69,7 @@ class SelectYear extends PureComponent {
     const valid = this.validateYear(lastYear)
     if (valid === true) {
       this.setState({historyYear: lastYear})
-      store.dispatch({
-          type: 'UPDATE_HISTORY_YEAR',
-          historyYear: lastYear
-      })
+      this.props.updateHistoryYear(lastYear)
       this.props.loadHistoryData(lastYear)
     }
   }
@@ -88,10 +78,7 @@ class SelectYear extends PureComponent {
     const valid = this.validateYear(tenYearsAgo)
     if (valid === true) {
       this.setState({historyYear: tenYearsAgo})
-      store.dispatch({
-          type: 'UPDATE_HISTORY_YEAR',
-          historyYear: tenYearsAgo
-      })
+      this.props.updateHistoryYear(tenYearsAgo)
       this.props.loadHistoryData(tenYearsAgo)
     }
   }
@@ -116,7 +103,7 @@ export default connect(
     historyYear: storeState.historyYear,
   }),
   {
-    gotoFollowingYear: actions.gotoFollowingYear,
+    updateHistoryYear: actions.updateHistoryYear,
     gotoTenYearsLater: actions.gotoTenYearsLater,
     gotoLastYear: actions.gotoLastYear,
     loadHistoryData: actions.getHistoryWeather,
