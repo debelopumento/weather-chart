@@ -1,11 +1,15 @@
 import axios from 'axios'
 
 const APIkey = 'c905350f371fe191'
+const API_URL_BASE = 'http://api.wunderground.com/api/'
+const state = 'CA'
+const city = 'San_Francisco'
+
 
 export const GET_TODAYS_SUMMARY = 'GET_TODAYS_SUMMARY'
 export const getTodaysSummary = () => {
-    return function(dispatch) {
-        axios.get(`http://api.wunderground.com/api/${APIkey}/forecast/q/CA/San_Francisco.json`)
+    return dispatch => {
+        axios.get(`${API_URL_BASE}${APIkey}/forecast/q/${state}/${city}.json`)
         .then(function(res) {
             dispatch({
                 type: GET_TODAYS_SUMMARY,
@@ -19,9 +23,9 @@ export const getTodaysSummary = () => {
 
 export const GET_CURRENT_WEATHER = 'GET_CURRENT_WEATHER'
 export const getCurrentWeather = () => {
-	return function(dispatch) {
-        axios.get(`http://api.wunderground.com/api/${APIkey}/hourly/q/CA/San_Francisco.json`)
-      	.then(function(res) {
+	return dispatch => {
+        axios.get(`${API_URL_BASE}${APIkey}/hourly/q/${state}/${city}.json`)
+      	.then(res => {
             dispatch({
         		type: GET_CURRENT_WEATHER,
         		payload: res.data
@@ -32,39 +36,25 @@ export const getCurrentWeather = () => {
 }
 
 export const GET_HISTORY_WEATHER = 'GET_HISTORY_WEATHER'
-export const getHistoryWeather = (year) => {
-    return function(dispatch) {
-        const todaysMonth = (new Date()).getMonth() + 1
-        const todaysDate = (new Date()).getDate()
-        const tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+export const getHistoryWeather = year => {
+    return dispatch => {
+        const date= new Date()
+        const todaysMonth = date.getMonth() + 1
+        const todaysDate = date.getDate()
+        const tomorrow = new Date(date.getTime() + 24 * 60 * 60 * 1000)
         const tomorrowsMonth = (new Date(tomorrow)).getMonth() + 1
         const tomorrowsDate = (new Date(tomorrow)).getDate()
-        const getMonthString = (month) => {
-            let formatedMonth = ''
-            if (month < 10) {
-                formatedMonth = '0' + month
-            } else {
-                formatedMonth = month.toString()
-            }
-            return formatedMonth
-        }
-        const getDateString = (date) => {
-            let formatedDate = ''
-            if (date < 10) {
-                formatedDate = '0' + date
-            } else {
-                formatedDate = date.toString()
-            }
-            return formatedDate
-        }
-        console.log(199, year)
-        const todaysDateInHistory = year + getMonthString(todaysMonth) + getDateString(todaysDate)
-        const tomorrowsDateInHistory = year + getMonthString(tomorrowsMonth) + getDateString(tomorrowsDate)
-        console.log(200, todaysDateInHistory, 201, tomorrowsDateInHistory)
-        axios.get(`http://api.wunderground.com/api/${APIkey}/history_${todaysDateInHistory}/q/CA/San_Francisco.json`)
-        .then(function(resToday) {
-            axios.get(`http://api.wunderground.com/api/${APIkey}/history_${tomorrowsDateInHistory}/q/CA/San_Francisco.json`)
-            .then(function(resTomorrow) {
+        const formatDate = month => (month < 10 ? `0${month}` : month.toString())
+        const todaysDateInHistory = year + formatDate(todaysMonth) + formatDate(todaysDate)
+        const tomorrowsDateInHistory = year + formatDate(tomorrowsMonth) + formatDate(tomorrowsDate)
+
+        const getApiUrl = (date) =>
+          `${API_URL_BASE}${APIkey}/history_${date}/q/${state}/${city}.json`
+
+        axios.get(getApiUrl(todaysDateInHistory))
+        .then(resToday => {
+            axios.get(getApiUrl(tomorrowsDateInHistory))
+            .then(resTomorrow => {
                 const historyData = {
                     todayInHistory: resToday.data,
                     tomorrowInHistory: resTomorrow.data
@@ -82,10 +72,9 @@ export const getHistoryWeather = (year) => {
 
 
 export const GO_TO_FOLLOWING_YEAR = 'GO_TO_FOLLOWING_YEAR'
-export const gotoFollowingYear = (year) => {
-    return function(dispatch) {
+export const gotoFollowingYear = year => {
+    return dispatch => {
         const followingYear = year + 1
-        console.log(71, followingYear)
         dispatch({
             type: GO_TO_FOLLOWING_YEAR,
             followingYear
@@ -94,10 +83,9 @@ export const gotoFollowingYear = (year) => {
 }
 
 export const GO_TO_TEN_YEARS_LATER = 'GO_TO_TEN_YEARS_LATER'
-export const gotoTenYearsLater = (year) => {
-    return function(dispatch) {
+export const gotoTenYearsLater = year => {
+    return dispatch => {
         const tenYearsLater = year + 10
-        console.log(81, tenYearsLater)
         dispatch({
             type: GO_TO_TEN_YEARS_LATER,
             tenYearsLater

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Svg from './svg'
+import ComparativeD3Graph from './comparativeD3Graph'
 import Nav from './nav'
 import SelectYear from './selectYear'
 import HistoryData from './historyData'
@@ -7,34 +7,34 @@ import CurrentData from './currentData'
 import reactCSS from 'reactcss'
 
 const styles = reactCSS({
-  'default': {
+  default: {
     app: {
       	height: '100%',
       	textAlign: 'center',
       	color: 'white',
-      	paddingBottom: '0',
+      	paddingBottom: 0,
     },
     title: {
-      	paddingTop: '25px',
-      	marginTop: '0px',
-      	paddingBottom: '25px',
-      	borderBottom: '1px #0e4b51 solid'
+      	paddingTop: 25,
+      	marginTop: 0,
+      	paddingBottom: 25,
+      	borderBottom: '1 #0e4b51 solid'
     }
   }
 })
 
 
-class App extends Component {
-  render() {
+const App = () => {
+  
     return (
       <div style={ styles.app } className="App">
         <Nav />
-        <Svg />
+        <ComparativeD3Graph />
         <SelectYear />
         <CurrentData /><HistoryData />
       </div>
-    );
-  }
+    )
+  
 }
 
 export default App;

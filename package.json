@@ -6,13 +6,10 @@
     "axios": "^0.15.3",
     "d3": "^4.7.1",
     "react": "^15.4.2",
-    "react-d3": "^0.4.0",
-    "react-d3-basic": "^1.6.11",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
     "reactcss": "^1.2.2",
     "redux": "^3.6.0",
-    "redux-logger": "^2.8.2",
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0"
   },
@@ -22,7 +19,8 @@
     "enzyme": "^2.7.1",
     "mocha": "^2.5.3",
     "react-addons-test-utils": "^15.4.2",
-    "react-scripts": "0.9.5"
+    "react-scripts": "0.9.5",
+    "redux-logger": "^2.8.2"
   },
   "scripts": {
     "start": "react-scripts start",

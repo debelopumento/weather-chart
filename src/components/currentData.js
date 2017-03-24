@@ -4,33 +4,33 @@ import * as actions from '../actions/actionIndex'
 import reactCSS from 'reactcss'
 
 const styles = reactCSS({
-  'default': {
+  default: {
     currentData: {
       float: 'left',
       width: '49.8%',
-      marginBottom: '0',
+      marginBottom: 0,
       backgroundColor: '#ef4856',
-      height: '240px',
+      height: 240,
     },
     container: {
       float: 'top',
     },
     temperatureText: {
-      fontSize: '50px',
-      marginBottom: '20px',
-      marginTop: '2px',
+      fontSize: 50,
+      marginBottom: 20,
+      marginTop: 2,
     },
 
   }
 })
 
-const { object, func} = PropTypes
+const { object, func } = PropTypes
 
 class CurrentData extends PureComponent {
 
   static PropTypes = {
     todaysSummary: object,
-    loadTodaysSummary: func,
+    loadTodaysSummary: func.isRequired,
   }
 
   static defaultProps = {
@@ -63,13 +63,14 @@ class CurrentData extends PureComponent {
             </div>
           </div>
         )
-      } else {
-          return (    
-            <div>
-              
-            </div>
-          )
-        }
+      }  
+      
+      return (    
+        <div>
+          
+        </div>
+      )
+        
   }
 }
 

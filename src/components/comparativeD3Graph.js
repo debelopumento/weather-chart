@@ -5,7 +5,7 @@ import * as actions from '../actions/actionIndex'
 import reactCSS from 'reactcss'
 
 const styles = reactCSS({
-  'default': {
+  default: {
     svgMain: {
       height: '280px',
       marginBottom: '0',
@@ -15,7 +15,7 @@ const styles = reactCSS({
 
 const { number, object, func} = PropTypes
 
-class Svg extends PureComponent {
+class ComparativeD3Graph extends PureComponent {
 
   static PropTypes = {
     currentData: object,
@@ -268,4 +268,4 @@ export default connect(
     loadCurrentData: actions.getCurrentWeather,
     loadHistoryData: actions.getHistoryWeather,
   }
-)(Svg) 
+)(ComparativeD3Graph)

@@ -3,21 +3,21 @@ import { connect } from 'react-redux'
 import reactCSS from 'reactcss'
 
 const styles = reactCSS({
-  'default': {
+  default: {
     historyData: {
       float: 'right',
       width: '49.8%',
-      marginBottom: '0',
+      marginBottom: 0,
       backgroundColor: '#3ed3c7',
-      height: '240px',
+      height: 240,
     },
     container: {
       float: 'top',
     },
     temperatureText: {
-      fontSize: '50px',
-      marginBottom: '20px',
-      marginTop: '2px',
+      fontSize: 50,
+      marginBottom: 20,
+      marginTop: 2,
     },
   }
 })
@@ -36,38 +36,40 @@ class HistoryData extends PureComponent {
     historyYear: 1977
   }
 
-  componentWillMount() {
-  }
-
   render() {
 
-    if(this.props.historyData != null) {
+    if(this.props.historyData !== null) {
         
         //time, start and end point of the timeline
-        const now = new Date()
-        let today = now
-        today.setDate(now.getDate() - 0.29166666)
-        today = today.toISOString().slice(0, 19)
-                
-        const historyYear = this.props.historyYear
-        const todaysDateInHistory = today.slice(5, 7) + '-' + today.slice(8, 10) + '-' + historyYear
-
+        let today = new Date()
+        let dd = today.getDate()
+        let mm = today.getMonth() + 1
+        if (dd < 10) {
+          dd = '0' + dd
+        }
+        if (mm < 10) {
+          mm = '0' + mm
+        }
+        const yyyy = this.props.historyYear
+        const todaysDateInHistory = `${mm}-${dd}-${yyyy}`
+        const minTemperature = this.props.historyData.todayInHistory.history.dailysummary[0].mintempi
+        const maxTemperature = this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi
         return (    
           <div style={ styles.historyData }>
             <div style={ styles.container }>
               <h2>{todaysDateInHistory}</h2>
-              <h1 style={ styles.temperatureText }>{this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi}</h1>
-              <h1 style={ styles.temperatureText }>{this.props.historyData.todayInHistory.history.dailysummary[0].mintempi}</h1>
+              <h1 style={ styles.temperatureText }>{maxTemperature}</h1>
+              <h1 style={ styles.temperatureText }>{minTemperature}</h1>
             </div>
           </div>
         )
-      } else {
-          return (    
-            <div>
-              
-            </div>
-          )
-        }
+      }
+
+      return (    
+        <div>
+          
+        </div>
+      )
   }
 }
 
