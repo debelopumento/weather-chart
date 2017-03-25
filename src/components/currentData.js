@@ -12,9 +12,6 @@ const styles = reactCSS({
       backgroundColor: '#ef4856',
       height: 240,
     },
-    container: {
-      float: 'top',
-    },
     temperatureText: {
       fontSize: 50,
       marginBottom: 10,
@@ -42,33 +39,35 @@ class CurrentData extends PureComponent {
   }
 
   render() {
-
-    if(this.props.todaysSummary !== null) {
+    const { todaysSummary } = this.props
+    if(todaysSummary !== null) {
         
-        //time, start and end point of the timeline
-        const now = new Date()
-        let today = now
-        today.setDate(now.getDate() - 0.29166666)
-        today = today.toISOString().slice(0, 19)
-              
-        const currentYear = '2017'
-        const todaysDate = today.slice(5, 7) + '-' + today.slice(8, 10) + '-' + currentYear
+        //time, start and end point of the timeline        
+        let today = new Date()
+        let dd = today.getDate()
+        let mm = today.getMonth() + 1
+        if (dd < 10) {
+          dd = '0' + dd
+        }
+        if (mm < 10) {
+          mm = '0' + mm
+        }
+        const yyyy =today.getYear()
+        const todaysDate = `${mm}-${dd}-${yyyy}`
       
         return (    
           <div style={ styles.currentData }>
-            <div style={ styles.container }>
+            <div>
               <h2>{todaysDate}</h2>
-              <h1 style={ styles.temperatureText }>{this.props.todaysSummary.forecast.simpleforecast.forecastday[0].high.fahrenheit}</h1>
-              <h1 style={ styles.temperatureText }>{this.props.todaysSummary.forecast.simpleforecast.forecastday[0].low.fahrenheit}</h1>
+              <h1 style={ styles.temperatureText }>{todaysSummary.forecast.simpleforecast.forecastday[0].high.fahrenheit}</h1>
+              <h1 style={ styles.temperatureText }>{todaysSummary.forecast.simpleforecast.forecastday[0].low.fahrenheit}</h1>
             </div>
           </div>
         )
       }  
       
       return (    
-        <div>
-          
-        </div>
+        <div />
       )
         
   }

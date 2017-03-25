@@ -13,6 +13,12 @@ const styles = reactCSS({
   }
 })
 
+const WIDTH = document.documentElement.clientWidth 
+const HEIGHT = 280
+const MARGINS = {
+  RIGHT: 0,
+  LEFT: 0
+}  
 const { number, object, func} = PropTypes
 
 class ComparativeD3Graph extends PureComponent {
@@ -38,9 +44,6 @@ class ComparativeD3Graph extends PureComponent {
 
   componentDidUpdate() {
     
-    const WIDTH = document.documentElement.clientWidth  
-    const HEIGHT = 280
-
     const { currentData, historyData } = this.props
 
     if(currentData !== null && historyData !== null) {
@@ -81,9 +84,9 @@ class ComparativeD3Graph extends PureComponent {
               }
             }
             return {
-              'todaysTemperature': Number(currentData.hourly_forecast[index].temp.english),
-              'historyTemperature': historyTemperature,
-              'time': index
+              todaysTemperature: Number(currentData.hourly_forecast[index].temp.english),
+              historyTemperature: historyTemperature,
+              time: index
             }
         })
         console.log(9, dataForRender)
@@ -92,12 +95,14 @@ class ComparativeD3Graph extends PureComponent {
         vis.selectAll('*').remove()
         
         //draw x axis
-        const xScale = d3.scaleLinear().range([-20, WIDTH-50]).domain([dataForRender[0].time, dataForRender[23].time])
+        const xScale = d3.scaleLinear()
+              .range([-20, WIDTH-50])
+              .domain([dataForRender[0].time, dataForRender[23].time])
         const d3ParseScale = d3.scaleTime()
               .domain([d3.timeParse('%Y-%m-%dT%H:%M:%S')(today), d3.timeParse('%Y-%m-%dT%H:%M:%S')(tomorrow)])
-              .range([30, WIDTH]);
-        const drawScale = function(scale, dst) {
-            const xAxis = d3.axisBottom(scale);
+              .range([30, WIDTH])
+        const drawScale = (scale, dst) => {
+            const xAxis = d3.axisBottom(scale)
             vis.append('g')
               .attr('class', 'axisLine')
               .attr("transform", "translate(0, 250)")
@@ -105,52 +110,58 @@ class ComparativeD3Graph extends PureComponent {
               .attr('stroke-width', 1)
               .call(xAxis)
         }
-        drawScale(d3ParseScale,[]);
-        //
-
+        drawScale(d3ParseScale,[])
 
         //get lowest and highest temperature
-        const minTemperature = Math.min(d3.min(dataForRender, function(d) { return d.todaysTemperature }), d3.min(dataForRender, function(d) { return d.historyTemperature }))
-        const maxTemperature = Math.max(d3.max(dataForRender, function(d) { return d.todaysTemperature }), d3.max(dataForRender, function(d) { return d.historyTemperature }))
+        const minTemperature = Math.min(d3.min(dataForRender, data => { return data.todaysTemperature }), d3.min(dataForRender, data => { return data.historyTemperature }))
+        const maxTemperature = Math.max(d3.max(dataForRender, data => { return data.todaysTemperature }), d3.max(dataForRender, data => { return data.historyTemperature }))
 
         //draw y axis
         const yScale = d3.scaleLinear().range([250, 20]).domain([minTemperature - 2, maxTemperature + 2])
         const yAxis = d3.axisLeft().scale(yScale)
-        vis.append("g")
+        vis.append('g')
               .attr('class', 'axisLine')
-              .attr("transform", "translate(30, 0)")
+              .attr('transform', 'translate(30, 0)')
               .attr('stroke', 'white')
               .attr('stroke-width', 1)
               .call(yAxis)
 
         //create path drawers      
-        const lineGen_current = d3.line()
-              .x(function(d) {
-                  return xScale(d.time);
+        const generateCurrentTemperatureLine = d3.line()
+              .x(data => {
+                  return xScale(data.time)
               })
-              .y(function(d) {
-                  return yScale(d.todaysTemperature);
+              .y(data => {
+                  return yScale(data.todaysTemperature)
               })
-              .curve(d3.curveCardinal);
+              .curve(d3.curveCardinal)
 
-        const lineGen_history = d3.line()
-              .x(function(d) {
-                  return xScale(d.time);
+        const generateHistoryTemperatureLine = d3.line()
+              .x(data => {
+                  return xScale(data.time)
               })
-              .y(function(d) {
-                  return yScale(d.historyTemperature);
+              .y(data => {
+                  return yScale(data.historyTemperature)
               })
-              .curve(d3.curveCardinal);
+              .curve(d3.curveCardinal)
 
         //draw difference                    
         const line = d3.area()
-              .x(function(d) { return xScale(d.time) })
-              .y(function(d) { return yScale(d.historyTemperature) })
+              .x(data => {
+                  return xScale(data.time)
+              })
+              .y(data => {
+                  return yScale(data.historyTemperature)
+              })
               .curve(d3.curveCardinal)
 
         const area = d3.area()
-              .x(function(d) { return xScale(d.time) })
-              .y1(function(d) { return yScale(d.todaysTemperature) })
+              .x(data => {
+                  return xScale(data.time)
+                })
+              .y1(data => {
+                  return yScale(data.todaysTemperature)
+                })
               .curve(d3.curveCardinal)
         
         vis.datum(dataForRender)
@@ -167,7 +178,9 @@ class ComparativeD3Graph extends PureComponent {
 
         vis.append('path')
               .attr('clip-path', 'url(#clip-above)')
-              .attr('d', area.y0(function(d) { return yScale(d.historyTemperature) }))
+              .attr('d', area.y0(data => {
+                                  return yScale(data.historyTemperature) 
+                              }))
               .attr('transform', 'translate(50, 0)')
               .attr('fill', 'rgba(78, 183, 213, 0.8)')
 
@@ -184,41 +197,31 @@ class ComparativeD3Graph extends PureComponent {
         //draw paths
         ///current weather
         vis.append('path')
-              .attr('d', lineGen_current(dataForRender))
+              .attr('d', generateCurrentTemperatureLine(dataForRender))
               .attr('class', 'currentWeatherLine')
               .attr('stroke', '#ef4856')
-              .attr("transform", "translate(50, 0)")
+              .attr('transform', 'translate(50, 0)')
               .attr('stroke-width', 3)
               .attr('fill', 'none')
 
         ///history weather
         vis.append('path')
-              .attr('d', lineGen_history(dataForRender))
+              .attr('d', generateHistoryTemperatureLine(dataForRender))
               .attr('stroke', '#3ed3c7')
-              .attr("transform", "translate(50, 0)")
+              .attr('transform', 'translate(50, 0)')
               .attr('stroke-width', 3)
               .attr('fill', 'none')
-
     }
   }
 
-  render() {
-    const WIDTH = document.documentElement.clientWidth  
-    const MARGINS = {
-      top: 10,
-      right: 0,
-      bottom: 10,
-      left: 0
-    }    
-   
+  render() {   
     return (    
       <div style={ styles.svgMain } >
-        <svg id='visulization' width={WIDTH-MARGINS.right-MARGINS.left} height='300'>
+        <svg id="visulization" width={WIDTH-MARGINS.RIGHT-MARGINS.LEFT} height='300'>
         </svg>
       </div>
     )
   }
-        
 }
 
 export default connect(

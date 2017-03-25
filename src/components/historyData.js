@@ -11,9 +11,6 @@ const styles = reactCSS({
       backgroundColor: '#3ed3c7',
       height: 240,
     },
-    container: {
-      float: 'top',
-    },
     temperatureText: {
       fontSize: 50,
       marginBottom: 10,
@@ -56,7 +53,7 @@ class HistoryData extends PureComponent {
         const maxTemperature = this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi
         return (    
           <div style={ styles.historyData }>
-            <div style={ styles.container }>
+            <div>
               <h2>{todaysDateInHistory}</h2>
               <h1 style={ styles.temperatureText }>{maxTemperature}</h1>
               <h1 style={ styles.temperatureText }>{minTemperature}</h1>
@@ -66,9 +63,7 @@ class HistoryData extends PureComponent {
       }
 
       return (    
-        <div>
-          
-        </div>
+        <div />
       )
   }
 }

@@ -4,7 +4,7 @@ import * as actions from '../actions/actionIndex'
 import reactCSS from 'reactcss'
 
 const styles = reactCSS({
-  'default': {
+  default: {
     button: {
       color: 'orange',
       fontSize: 23,
@@ -19,11 +19,7 @@ const styles = reactCSS({
 const { object, func} = PropTypes
 
 class SelectYear extends PureComponent {
-
-  state = {
-    historyYear: 1977
-  }
-
+  
   static PropTypes = {
     historyYear: object,
     goToFollowingYear: func,
@@ -32,6 +28,10 @@ class SelectYear extends PureComponent {
 
   static defaultProps = {
     historyYear: 1977,
+  }
+
+  state = {
+    historyYear: 1977
   }
 
   validateYear = (year) => {

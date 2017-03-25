@@ -24,18 +24,14 @@ const styles = reactCSS({
 })
 
 
-const App = () => {
-  
-    return (
+const App = () => (
       <div style={ styles.app } className="App">
         <Nav />
         <ComparativeD3Graph />
         <SelectYear />
         <CurrentData /><HistoryData />
       </div>
-    )
-  
-}
+)
 
-export default App;
+export default App
 
