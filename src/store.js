@@ -4,10 +4,19 @@ import thunk from "redux-thunk"
 import promise from "redux-promise-middleware"
 import allReducers from "./reducers"
 
-const middlewareList = [promise(), thunk]
+let middleware
 
-if (process.env.NODE_ENV !== 'production') middlewareList.push(logger())
+if (process.env.NODE_ENV !== 'production')
+{
+	middleware = applyMiddleware(promise(), thunk, logger())
+}
 
-const middleware = applyMiddleware(middlewareList)
+if (process.env.NODE_ENV === 'production') {
+	middleware = applyMiddleware(promise(), thunk)
+}
+
+
 
 export default createStore(allReducers, middleware)
+
+
