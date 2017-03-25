@@ -19,7 +19,7 @@ const styles = reactCSS({
 const { object, func} = PropTypes
 
 class SelectYear extends PureComponent {
-  
+
   static PropTypes = {
     historyYear: object,
     goToFollowingYear: func,
@@ -46,45 +46,30 @@ class SelectYear extends PureComponent {
     else return true
   }
 
-  gotoNextYear = () => {    
-    const nextYear = this.state.historyYear + 1
-    const valid = this.validateYear(nextYear)
-    if (valid === true) {
-      this.setState({historyYear: nextYear})
-      this.props.updateHistoryYear(nextYear)
-      this.props.loadHistoryData(nextYear)
+  gotoYear = (differenceValue) => {
+    const year = this.props.historyYear + differenceValue
+    const valid = this.validateYear(year)
+    if (valid) {
+      this.setState({historyYear: year})
+      this.props.updateHistoryYear(year)
+      this.props.loadHistoryData(year)
     }
+  }
+
+  gotoNextYear = () => {    
+    this.gotoYear(1)
   }
   gotoTenYearsLater = () => {    
-    const tenYearsLater = this.state.historyYear + 10
-    const valid = this.validateYear(tenYearsLater)
-    if (valid === true) {
-      this.setState({historyYear: tenYearsLater})
-      this.props.updateHistoryYear(tenYearsLater)
-      this.props.loadHistoryData(tenYearsLater)
-    }
+    this.gotoYear(10)
   }
   gotoLastYear = () => {
-    const lastYear = this.state.historyYear - 1
-    const valid = this.validateYear(lastYear)
-    if (valid === true) {
-      this.setState({historyYear: lastYear})
-      this.props.updateHistoryYear(lastYear)
-      this.props.loadHistoryData(lastYear)
-    }
+    this.gotoYear(-1)
   }
   gotoTenYearsAgo = () => {
-    const tenYearsAgo = this.state.historyYear - 10
-    const valid = this.validateYear(tenYearsAgo)
-    if (valid === true) {
-      this.setState({historyYear: tenYearsAgo})
-      this.props.updateHistoryYear(tenYearsAgo)
-      this.props.loadHistoryData(tenYearsAgo)
-    }
+    this.gotoYear(-10)
   }
 
   render() {
-
     return (    
        <div>
         <span><input style={ styles.button } type='submit' value='<<<' onClick={this.gotoTenYearsAgo}/></span>
@@ -94,7 +79,6 @@ class SelectYear extends PureComponent {
         <span><input style={ styles.button } type='submit' value='>>>' onClick={this.gotoTenYearsLater}/></span>
       </div>
     )
-      
   }
 }
 
@@ -104,8 +88,6 @@ export default connect(
   }),
   {
     updateHistoryYear: actions.updateHistoryYear,
-    gotoTenYearsLater: actions.gotoTenYearsLater,
-    gotoLastYear: actions.gotoLastYear,
     loadHistoryData: actions.getHistoryWeather,
   }
 )(SelectYear) 

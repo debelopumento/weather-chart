@@ -52,7 +52,8 @@ class CurrentData extends PureComponent {
         if (mm < 10) {
           mm = '0' + mm
         }
-        const yyyy =today.getYear()
+        const yyyy = '2017'
+
         const todaysDate = `${mm}-${dd}-${yyyy}`
       
         return (    
