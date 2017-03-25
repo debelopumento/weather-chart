@@ -1,9 +1,5 @@
 import {combineReducers} from 'redux'
 
-const LocationReducer = (state="San_Francisco", action) => {
-    return state
-}
-
 const CurrentWeatherReducer = (state=null, action) => {
     switch (action.type) {
         case 'GET_CURRENT_WEATHER': {
@@ -11,7 +7,6 @@ const CurrentWeatherReducer = (state=null, action) => {
         }
         default: return state
     }
-
 }
 
 const HistoryWeatherReducer = (state=null, action) => {
@@ -43,12 +38,10 @@ const HistoryYearReducer = (state=1977, action) => {
 }
 
 const allReducers = combineReducers({
-    location: LocationReducer,
     historyYear: HistoryYearReducer,
     currentWeather: CurrentWeatherReducer,
     todaysSummary: TodaysSummaryReducer,
     historyWeather: HistoryWeatherReducer
-
 })
 
 export default allReducers
