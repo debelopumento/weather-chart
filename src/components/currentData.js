@@ -43,7 +43,7 @@ class CurrentData extends PureComponent {
 
   render() {
 
-    if(this.props.todaysSummary != null) {
+    if(this.props.todaysSummary !== null) {
         
         //time, start and end point of the timeline
         const now = new Date()

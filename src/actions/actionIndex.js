@@ -76,3 +76,12 @@ export const updateHistoryYear = year => {
       historyYear: year
     }
 }
+
+/*
+export const updateHistoryYear = year => 
+    dispatch =>
+        dispatch({
+            type: UPDATE_HISTORY_YEAR,
+            historyYear: year
+        })
+*/

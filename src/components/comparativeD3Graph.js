@@ -41,7 +41,9 @@ class ComparativeD3Graph extends PureComponent {
     const WIDTH = document.documentElement.clientWidth  
     const HEIGHT = 280
 
-    if(this.props.currentData != null && this.props.historyData != null) {
+    const { currentData, historyData } = this.props
+
+    if(currentData !== null && historyData !== null) {
       
         //time, start and end point of the timeline
         const now = new Date()
@@ -52,79 +54,43 @@ class ComparativeD3Graph extends PureComponent {
         tomorrow.setDate(now.getDate() + 1)
         tomorrow = tomorrow.toISOString().slice(0, 19)
         const todayStartHour = Number(today.slice(11, 13))
-        let tomorrowEndHour = 0
-        if (todayStartHour >= 1) {
-          tomorrowEndHour = todayStartHour - 1
-        } else {
-          tomorrowEndHour = 23
-        }
         
         //convert raw currentData from API to dataForRender for display
-        let dataForRender = []
-        let j = todayStartHour
-        let k = 0
-        console.log(1, j)
-        for (let index=0; index <= 23; index++) {
-          if (j <= 23) {
-            //validate history temperature data. if missing, replace it with the data of last element in array. If the first temperature in history is missing, replace it with the average temperature on that history day.
-            let historyTemperature = 0
-            if (this.props.historyData.todayInHistory.history.observations[j] === undefined) {
-              
-              historyTemperature = Math.round((Number((this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi)) + Number((this.props.historyData.todayInHistory.history.dailysummary[0].mintempi))) / 2)
-              console.log(400, index, 401, j, 402, historyTemperature, 403, this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi, 404, this.props.historyData.todayInHistory.history.dailysummary[0].mintempi)
-            } else {
-              historyTemperature = Number(this.props.historyData.todayInHistory.history.observations[j].tempi)
-            }
-            if (historyTemperature < 0 && index >= 1) {
-              historyTemperature = Number(dataForRender[index-1].historyTemperature)
-            }
-            else if (historyTemperature < 0 && index === 0) {
-              historyTemperature = Math.round((Number((this.props.historyData.todayInHistory.history.dailysummary[0].maxtempi)) + Number((this.props.historyData.todayInHistory.history.dailysummary[0].mintempi))) / 2)
-            }
-            dataForRender.push({
-              'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
-              'historyTemperature': historyTemperature,
-              'time': index
-            })
-            j++
-          } else if (k <= tomorrowEndHour) {
-            let historyTemperature = 0
-            if (this.props.historyData.tomorrowInHistory.history.observations[k] === undefined) {
-              historyTemperature = Math.round((Number((this.props.historyData.tomorrowInHistory.history.dailysummary[0].maxtempi)) + Number((this.props.historyData.tomorrowInHistory.history.dailysummary[0].mintempi))) / 2)
-            } else {
-              historyTemperature = Number(this.props.historyData.tomorrowInHistory.history.observations[k].tempi)
-            }
-            if (historyTemperature < 0 && index >= 1) {
-              historyTemperature = Number(dataForRender[index-1].historyTemperature)
-            }
-            else if (historyTemperature < 0 && index === 0) {
-              historyTemperature = Math.round((Number((this.props.historyData.tomorrowInHistory.history.dailysummary[0].maxtempi)) + Number((this.props.historyData.tomorrowInHistory.history.dailysummary[0].mintempi))) / 2)
-            }
+        const indexArray = [...Array(24).keys()]
+        const todayInHistoryData = historyData.todayInHistory.history
+        const tomorrowInHistoryData = historyData.tomorrowInHistory.history
+        const todayDataLength = 24 - todayStartHour
+        const meanTemperatureDayFirst = Math.round((Number((todayInHistoryData.dailysummary[0].maxtempi)) + Number((todayInHistoryData.dailysummary[0].mintempi))) / 2)
+        const meanTemperatureDaySecond = Math.round((Number((tomorrowInHistoryData.dailysummary[0].maxtempi)) + Number((tomorrowInHistoryData.dailysummary[0].mintempi))) / 2)
 
-            dataForRender.push({
-              'todaysTemperature': Number(this.props.currentData.hourly_forecast[index].temp.english),
+        const dataForRender = indexArray.map(index => {
+            let historyTemperature = 0
+            if (index < todayDataLength) {
+              //validate history temperature data. Sometimes the data from API is missing and sometimes the missing temperature has a value of -9999. In both case, fill it with the mean temperature of the day
+              if (todayInHistoryData.observations[index] !== undefined && Number(todayInHistoryData.observations[index].tempi) > 0) {
+                historyTemperature = Number(todayInHistoryData.observations[index].tempi)
+              } else {
+                historyTemperature = meanTemperatureDayFirst
+              }
+            } else if (index >= todayDataLength) {
+              const followingDayHour = index - todayDataLength
+              if (tomorrowInHistoryData.observations[followingDayHour] !== undefined && Number(tomorrowInHistoryData.observations[followingDayHour].tempi > 0)) {
+                historyTemperature = Number(tomorrowInHistoryData.observations[followingDayHour].tempi)
+              } else {
+                historyTemperature = meanTemperatureDaySecond
+              }
+            }
+            return {
+              'todaysTemperature': Number(currentData.hourly_forecast[index].temp.english),
               'historyTemperature': historyTemperature,
               'time': index
-            })
-            k++
-          }          
-        }
+            }
+        })
         console.log(9, dataForRender)
-        //
 
         const vis = d3.select('#visulization')
         vis.selectAll('*').remove()
         
-        /*
-        // stand-in x axis
-        const standinXaxis = d3.axisBottom().scale(xScale).ticks(7)
-        vis.append("svg:g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(50, 150)")
-            .call(standinXaxis)
-        //
-        */
-
         //draw x axis
         const xScale = d3.scaleLinear().range([-20, WIDTH-50]).domain([dataForRender[0].time, dataForRender[23].time])
         const d3ParseScale = d3.scaleTime()
@@ -157,7 +123,6 @@ class ComparativeD3Graph extends PureComponent {
               .attr('stroke-width', 1)
               .call(yAxis)
 
-        
         //create path drawers      
         const lineGen_current = d3.line()
               .x(function(d) {
