@@ -6,8 +6,7 @@ import allReducers from "./reducers"
 
 let middleware
 
-if (process.env.NODE_ENV !== 'production')
-{
+if (process.env.NODE_ENV !== 'production') {
 	middleware = applyMiddleware(promise(), thunk, logger())
 }
 
@@ -15,8 +14,4 @@ if (process.env.NODE_ENV === 'production') {
 	middleware = applyMiddleware(promise(), thunk)
 }
 
-
-
 export default createStore(allReducers, middleware)
-
-

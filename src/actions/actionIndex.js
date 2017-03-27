@@ -12,7 +12,7 @@ export const GET_TODAYS_SUMMARY = 'GET_TODAYS_SUMMARY'
 export const getTodaysSummary = () => {
     return dispatch => {
         axios.get(`${API_URL_BASE}${APIkey}/forecast/q/${state}/${city}.json`)
-        .then(function(res) {
+        .then(res => {
             dispatch({
                 type: GET_TODAYS_SUMMARY,
                 payload: res.data
