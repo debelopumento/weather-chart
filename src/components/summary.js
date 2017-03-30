@@ -9,14 +9,14 @@ const styles = reactCSS({
       width: '49.8%',
       marginBottom: 0,
       backgroundColor: '#3ed3c7',
-      height: 240,
+      height: 220,
     },
     currentData: {
       float: 'left',
       width: '49.8%',
       marginBottom: 0,
       backgroundColor: '#ef4856',
-      height: 240,
+      height: 220,
     },
     temperatureText: {
       fontSize: 50,

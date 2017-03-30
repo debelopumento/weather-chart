@@ -18,10 +18,14 @@ const styles = reactCSS({
     	paddingTop: 15,
     	marginTop: 0,
     	borderBottom: '1px #0e4b51 solid',
-      fontFamily: 'Fira Sans Condensed',
+      fontFamily: 'Poppins',
+
     },
     location: {
-      fontFamily: 'Fira Sans Condensed',
+      fontFamily: 'Poppins',
+      marginTop: 0,
+      marginBottom: 0,
+      fontSize: 20,
     }
   }
 })

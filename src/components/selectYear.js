@@ -9,9 +9,10 @@ const styles = reactCSS({
       color: 'orange',
       fontSize: 23,
       padding: 15,
-        backgroundColor: 'rgba(0, 0, 0, 0)',
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       border: 0,
       paddingTop: 5,
+      fontFamily: 'Poppins',
     }
   }
 })
