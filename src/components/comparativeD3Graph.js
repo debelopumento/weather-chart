@@ -63,8 +63,18 @@ class ComparativeD3Graph extends PureComponent {
         const todayInHistoryData = historyData.todayInHistory.history
         const tomorrowInHistoryData = historyData.tomorrowInHistory.history
         const todayDataLength = 24 - todayStartHour
-        const meanTemperatureDayFirst = Math.round((Number((todayInHistoryData.dailysummary[0].maxtempi)) + Number((todayInHistoryData.dailysummary[0].mintempi))) / 2)
-        const meanTemperatureDaySecond = Math.round((Number((tomorrowInHistoryData.dailysummary[0].maxtempi)) + Number((tomorrowInHistoryData.dailysummary[0].mintempi))) / 2)
+        const meanTemperatureDayFirst = Math.round(
+            (
+              Number((todayInHistoryData.dailysummary[0].maxtempi)) +
+              Number((todayInHistoryData.dailysummary[0].mintempi))
+            ) / 2
+        )
+        const meanTemperatureDaySecond = Math.round(
+            (
+              Number((tomorrowInHistoryData.dailysummary[0].maxtempi)) + 
+              Number((tomorrowInHistoryData.dailysummary[0].mintempi))
+            ) / 2
+        )
 
         const dataForRender = indexArray.map(index => {
             let historyTemperature = 0
@@ -77,7 +87,11 @@ class ComparativeD3Graph extends PureComponent {
               }
             } else if (index >= todayDataLength) {
               const followingDayHour = index - todayDataLength
-              if (tomorrowInHistoryData.observations[followingDayHour] !== undefined && Number(tomorrowInHistoryData.observations[followingDayHour].tempi > 0)) {
+              if (
+                  tomorrowInHistoryData.observations[followingDayHour] !== undefined && 
+                  Number(tomorrowInHistoryData.observations[followingDayHour].tempi > 0)
+              ) 
+              {
                 historyTemperature = Number(tomorrowInHistoryData.observations[followingDayHour].tempi)
               } else {
                 historyTemperature = meanTemperatureDaySecond
@@ -113,8 +127,14 @@ class ComparativeD3Graph extends PureComponent {
         drawScale(d3ParseScale,[])
 
         //get lowest and highest temperature
-        const minTemperature = Math.min(d3.min(dataForRender, data => { return data.todaysTemperature }), d3.min(dataForRender, data => { return data.historyTemperature }))
-        const maxTemperature = Math.max(d3.max(dataForRender, data => { return data.todaysTemperature }), d3.max(dataForRender, data => { return data.historyTemperature }))
+        const minTemperature = Math.min(
+            d3.min(dataForRender, data => data.todaysTemperature), 
+            d3.min(dataForRender, data => data.historyTemperature)
+        )
+        const maxTemperature = Math.max(
+            d3.max(dataForRender, data => data.todaysTemperature), 
+            d3.max(dataForRender, data => data.historyTemperature)
+        )
 
         //draw y axis
         const yScale = d3.scaleLinear().range([250, 20]).domain([minTemperature - 2, maxTemperature + 2])
@@ -178,9 +198,9 @@ class ComparativeD3Graph extends PureComponent {
 
         vis.append('path')
               .attr('clip-path', 'url(#clip-above)')
-              .attr('d', area.y0(data => {
-                                  return yScale(data.historyTemperature) 
-                              }))
+              .attr('d', area.y0(data => 
+                                  yScale(data.historyTemperature) 
+                              ))
               .attr('transform', 'translate(50, 0)')
               .attr('fill', 'rgba(78, 183, 213, 0.8)')
 
@@ -229,6 +249,7 @@ export default connect(
     currentData: storeState.currentWeather,
     historyData: storeState.historyWeather,
     historyYear: storeState.historyYear,
+    todaysSummary: storeState.todaysSummary,
   }),
   {
     loadCurrentData: actions.getCurrentWeather,

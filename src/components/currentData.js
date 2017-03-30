@@ -1,6 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import * as actions from '../actions/actionIndex'
 import reactCSS from 'reactcss'
 
 const styles = reactCSS({
@@ -21,21 +20,16 @@ const styles = reactCSS({
   }
 })
 
-const { object, func } = PropTypes
+const { object } = PropTypes
 
 class CurrentData extends PureComponent {
 
   static PropTypes = {
     todaysSummary: object,
-    loadTodaysSummary: func.isRequired,
   }
 
   static defaultProps = {
     todaysSummary: {},
-  }
-
-  componentWillMount() {
-    this.props.loadTodaysSummary()
   }
 
   render() {
@@ -77,9 +71,7 @@ class CurrentData extends PureComponent {
 export default connect(
   storeState => ({
     todaysSummary: storeState.todaysSummary,
-  }),
-  {
-    loadTodaysSummary: actions.getTodaysSummary
-  }
+  })
+  
 )(CurrentData) 
 
