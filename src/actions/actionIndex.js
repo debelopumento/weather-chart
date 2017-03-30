@@ -1,7 +1,8 @@
 import axios from 'axios'
 
-const APIkey = 'c905350f371fe191'
+//const APIkey = 'c905350f371fe191'
 //const APIkey = '4cee7476501d72b9'
+const APIkey = 'c51fd3bcf4353f9f'
 const API_URL_BASE = '//api.wunderground.com/api/'
 const state = 'CA'
 const city = 'San_Francisco'
