@@ -2,8 +2,7 @@ import React from 'react'
 import ComparativeD3Graph from './comparativeD3Graph'
 import Nav from './nav'
 import SelectYear from './selectYear'
-import HistoryData from './historyData'
-import CurrentData from './currentData'
+import Summary from './summary'
 import reactCSS from 'reactcss'
 
 const styles = reactCSS({
@@ -29,9 +28,8 @@ const App = () => (
         <Nav />
         <ComparativeD3Graph />
         <SelectYear />
-        <CurrentData /><HistoryData />
+        <Summary type='current'/><Summary type='history'/>
       </div>
 )
 
 export default App
-
