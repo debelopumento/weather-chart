@@ -27,7 +27,7 @@ const TodaysSummaryReducer = (state=null, action) => {
     }
 }
 
-const HistoryYearReducer = (state=1977, action) => {
+const HistoryYearReducer = (state=1967, action) => {
     switch (action.type) {
         case 'UPDATE_HISTORY_YEAR': {
             return action.historyYear

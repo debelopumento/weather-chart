@@ -80,11 +80,21 @@ class ComparativeD3Graph extends PureComponent {
             let historyTemperature = 0
             if (index < todayDataLength) {
               //validate history temperature data. Sometimes the data from API is missing and sometimes the missing temperature has a value of -9999. In both case, fill it with the mean temperature of the day
-              if (todayInHistoryData.observations[index] !== undefined && Number(todayInHistoryData.observations[index].tempi) > 0) {
+              if (
+                  todayInHistoryData.observations[index] !== undefined && 
+                  Number(todayInHistoryData.observations[index].tempi) > 0
+              ) 
+              {
                 historyTemperature = Number(todayInHistoryData.observations[index].tempi)
-              } else {
-                historyTemperature = meanTemperatureDayFirst
-              }
+              } else if (
+                    Number(todayInHistoryData.observations[index - 1].tempi) > 0 && 
+                    Number(todayInHistoryData.observations[index + 1].tempi) > 0
+                ) 
+                {
+                  historyTemperature = Number(todayInHistoryData.observations[index-1].tempi)
+                } else {
+                  historyTemperature = meanTemperatureDayFirst
+                }
             } else if (index >= todayDataLength) {
               const followingDayHour = index - todayDataLength
               if (
@@ -93,6 +103,8 @@ class ComparativeD3Graph extends PureComponent {
               ) 
               {
                 historyTemperature = Number(tomorrowInHistoryData.observations[followingDayHour].tempi)
+              } else if (Number(tomorrowInHistoryData.observations[followingDayHour - 1].tempi) > 0 && Number(tomorrowInHistoryData.observations[followingDayHour + 1].tempi) > 0) {
+                historyTemperature = (Number(todayInHistoryData.observations[index - 1].tempi) + Number(todayInHistoryData.observations[index + 1].tempi)) / 2
               } else {
                 historyTemperature = meanTemperatureDaySecond
               }
@@ -103,7 +115,6 @@ class ComparativeD3Graph extends PureComponent {
               time: index
             }
         })
-        console.log(9, dataForRender)
 
         const vis = d3.select('#visulization')
         vis.selectAll('*').remove()
