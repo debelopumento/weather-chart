@@ -28,7 +28,7 @@ const App = () => (
         <Nav />
         <ComparativeD3Graph />
         <SelectYear />
-        <Summary type='current'/><Summary type='history'/>
+        <Summary type='current' /><Summary type='history' />
       </div>
 )
 

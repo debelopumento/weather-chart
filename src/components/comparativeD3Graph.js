@@ -159,40 +159,24 @@ class ComparativeD3Graph extends PureComponent {
 
         //create path drawers      
         const generateCurrentTemperatureLine = d3.line()
-              .x(data => {
-                  return xScale(data.time)
-              })
-              .y(data => {
-                  return yScale(data.todaysTemperature)
-              })
+              .x(data => xScale(data.time))
+              .y(data => yScale(data.todaysTemperature))
               .curve(d3.curveCardinal)
 
         const generateHistoryTemperatureLine = d3.line()
-              .x(data => {
-                  return xScale(data.time)
-              })
-              .y(data => {
-                  return yScale(data.historyTemperature)
-              })
+              .x(data => xScale(data.time))
+              .y(data => yScale(data.historyTemperature))
               .curve(d3.curveCardinal)
 
         //draw difference                    
         const line = d3.area()
-              .x(data => {
-                  return xScale(data.time)
-              })
-              .y(data => {
-                  return yScale(data.historyTemperature)
-              })
+              .x(data => xScale(data.time))
+              .y(data => yScale(data.historyTemperature))
               .curve(d3.curveCardinal)
 
         const area = d3.area()
-              .x(data => {
-                  return xScale(data.time)
-                })
-              .y1(data => {
-                  return yScale(data.todaysTemperature)
-                })
+              .x(data => xScale(data.time))
+              .y1(data => yScale(data.todaysTemperature))
               .curve(d3.curveCardinal)
         
         vis.datum(dataForRender)
