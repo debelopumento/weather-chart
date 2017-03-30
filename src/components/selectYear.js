@@ -34,7 +34,7 @@ class SelectYear extends PureComponent {
     historyYear: 1977
   }
 
-  validateYear = (year) => {
+  validateYear = year => {
     if (year > 2016) {
       alert('Please select a year prior to 2017!')
       return false
@@ -46,7 +46,7 @@ class SelectYear extends PureComponent {
     else return true
   }
 
-  gotoYear = (differenceValue) => {
+  gotoYear = differenceValue => () => {
     const year = this.props.historyYear + differenceValue
     const valid = this.validateYear(year)
     if (valid) {
@@ -56,27 +56,14 @@ class SelectYear extends PureComponent {
     }
   }
 
-  gotoNextYear = () => {    
-    this.gotoYear(1)
-  }
-  gotoTenYearsLater = () => {    
-    this.gotoYear(10)
-  }
-  gotoLastYear = () => {
-    this.gotoYear(-1)
-  }
-  gotoTenYearsAgo = () => {
-    this.gotoYear(-10)
-  }
-
   render() {
     return (    
        <div>
-        <span><input style={ styles.button } type="submit" value="<<<" onClick={this.gotoTenYearsAgo}/></span>
-        <span><input style={ styles.button } type="submit" value="<" onClick={this.gotoLastYear}/></span>
+        <span><input style={ styles.button } type="submit" value="<<<" onClick={this.gotoYear(-10)}/></span>
+        <span><input style={ styles.button } type="submit" value="<" onClick={this.gotoYear(-1)}/></span>
         <span style={ styles.button }> {this.props.historyYear} </span>
-        <span><input style={ styles.button } type="submit" value=">" onClick={this.gotoNextYear}/></span>
-        <span><input style={ styles.button } type="submit" value=">>>" onClick={this.gotoTenYearsLater}/></span>
+        <span><input style={ styles.button } type="submit" value=">" onClick={this.gotoYear(1)}/></span>
+        <span><input style={ styles.button } type="submit" value=">>>" onClick={this.gotoYear(10)}/></span>
       </div>
     )
   }
