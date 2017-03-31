@@ -2,6 +2,8 @@
 
 This web app shows the user if it is currently hotter than the same day in the selected year in history. 
 
+![Screenshot](https://github.com/debelopumento/weather-chart/public/images/weather-chart-screenShots.jpg)
+
 ### Run code locally
 ```sh
 npm install
