@@ -1,0 +1,20 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+env:
+- CXX=g++-4.8
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+deploy:
+  provider: heroku
+  api_key:
+    secure: cbdsDn7StCPx0J56HzdAVAwvm/Vkfhb9EtyEatfxCikyMeZvpC+Z67814WRa3EUPyEIfjIFgVSsyznNjWTLd1vrTKS/1a/S1yiT3FvJgB0xHF4ZFbekJGbCGKlyE9x/WiGPGU3N6BB6ROcj+UX2UYyYiRD6uyHY7mVyif29M5DMq6NTMegGX1q4fJCEERofZFIgQvLr1MhXYwuvkC56R+zPqsdK9oRQ5FCexiuJWM6rkxwfya4gE6h0Lt/Le3lClvmJCOrynHkuSrPXqw9RE74yenpp1tl/zTfRbq+nQmg5cMcPug1Cn+RUOTH/sfIjGPOZ7f+9ywY4j0h5JkS2mjl2jfUgyBs9dH7w9grq5gm3C2lx2iw8opTSVWUmpv06KeAaRA/+pJU5Oz9sIhXFwYw+utSguvh41LQ75JyeFYRUEG4W+PIMB3w6002tZA6zKwqsynB0Et+fQP4pfr7ccWrzVO9n7Bq4cqlC0i2f3rG/LH2dxwwtlaW7Hyx71R2z/M21ppJ6HyuSru/psFTfYM/mdB/TBmUl3FrMlPqAcbL2Kha3ya70Ta+bSJhbJXDnVcPKowqCUreyN9+3Gl+I9siD/95Z+9RRNy+2UFPC2808LjsiUmL1J8RKEdNBKNzxNI5cshZrfCJCOXGwGpV97mu1jok4zZVrdvkTB/Urmi9w=
+  app: is-it-getting-hotter
+  on:
+    repo: debelopumento/weather-chart
+    branch: dev
