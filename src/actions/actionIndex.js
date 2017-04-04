@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-//const APIkey = 'c905350f371fe191'
+const APIkey = 'c905350f371fe191';
 //const APIkey = '4cee7476501d72b9'
-const APIkey = 'c51fd3bcf4353f9f';
+//const APIkey = 'c51fd3bcf4353f9f';
 const API_URL_BASE = '//api.wunderground.com/api/';
 const state = 'CA';
 const city = 'San_Francisco';
@@ -21,7 +21,6 @@ export const getCurrentWeather = () => {
 
         Promise.all([firstPromise, secondPromise])
             .then(([res1, res2]) => {
-                console.log(10, res1.data, 11, res2.data);
                 dispatch({
                     type: GET_CURRENT_WEATHER,
                     payload: res2.data,
