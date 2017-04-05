@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const APIkey = '9ab23ecb7a68571a';
-\const API_URL_BASE = '//api.wunderground.com/api/';
+const API_URL_BASE = '//api.wunderground.com/api/';
 const state = 'CA';
 const city = 'San_Francisco';
 
