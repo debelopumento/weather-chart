@@ -14,10 +14,8 @@ npm start
 Then open [http://localhost:3000/](http://localhost:3000/)
 
 ## Tenical
-* The front end of the app is built with React, Redux and D3.
 * The data of historical weather is from [Wunderground](http://wunderground.com).
-
-Client Side development of the app is in React and Redux. Graph is rendered with D3.js.
+* Client Side development of the app is in React and Redux. Graph is rendered with D3.js.
 
 ### Unit Test
 To run unit test
