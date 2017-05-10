@@ -51,9 +51,9 @@ export const getHistoryWeather = year => dispatch => {
     const tomorrowsDateInHistory =
         year + formatDate(tomorrowsMonth) + formatDate(tomorrowsDate);
 
-    //const getApiUrl = date =>
-    //    `${API_URL_BASE}${APIkey}/history_${date}/q/${state}/${city}.json`;
-    const getApiUrl = date => `http://localhost:8080/getHistoryData/${date}`;
+    const getApiUrl = date =>
+        `${API_URL_BASE}${APIkey}/history_${date}/q/${state}/${city}.json`;
+    //const getApiUrl = date => `http://localhost:8080/getHistoryData/${date}`;
     console.log(11, todaysDateInHistory);
     console.log(12, getApiUrl(todaysDateInHistory));
     axios
