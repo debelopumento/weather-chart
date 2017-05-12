@@ -1,5 +1,4 @@
 import axios from "axios";
-
 //const APIkey = "9181f0b4a8b550bc";
 //const APIkey = 'c905350f371fe191';
 //const APIkey = '4cee7476501d72b9'
@@ -51,18 +50,22 @@ export const getHistoryWeather = year => dispatch => {
     const tomorrowsDateInHistory =
         year + formatDate(tomorrowsMonth) + formatDate(tomorrowsDate);
 
+    //const getApiUrl = date =>
+    //    `${API_URL_BASE}${APIkey}/history_${date}/q/${state}/${city}.json`;
     const getApiUrl = date =>
-        `${API_URL_BASE}${APIkey}/history_${date}/q/${state}/${city}.json`;
-    //const getApiUrl = date => `http://localhost:8080/getHistoryData/${date}`;
+        `https://weather-chart-server.herokuapp.com/getHistoryData/${date}`;
     console.log(11, todaysDateInHistory);
     console.log(12, getApiUrl(todaysDateInHistory));
     axios
         .get(getApiUrl(todaysDateInHistory))
         .then(resToday => {
+            console.log(13, resToday);
             axios.get(getApiUrl(tomorrowsDateInHistory)).then(resTomorrow => {
                 const historyData = {
-                    todayInHistory: resToday.data,
-                    tomorrowInHistory: resTomorrow.data
+                    todayInHistory: { history: resToday.data.result[0] },
+                    tomorrowInHistory: {
+                        history: resTomorrow.data.result[0]
+                    }
                 };
                 dispatch({
                     type: GET_HISTORY_WEATHER,
