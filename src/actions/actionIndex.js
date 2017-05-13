@@ -2,10 +2,14 @@ import axios from "axios";
 //const APIkey = "9181f0b4a8b550bc";
 //const APIkey = 'c905350f371fe191';
 //const APIkey = '4cee7476501d72b9'
-const APIkey = 'c51fd3bcf4353f9f';
+const APIkey = "c51fd3bcf4353f9f";
 const API_URL_BASE = "//api.wunderground.com/api/";
 const state = "CA";
 const city = "San_Francisco";
+
+const host = process.env.NODE_ENV === "production"
+    ? "/"
+    : "http://localhost:8080/";
 
 export const GET_TODAYS_SUMMARY = "GET_TODAYS_SUMMARY";
 export const GET_CURRENT_WEATHER = "GET_CURRENT_WEATHER";
@@ -50,16 +54,17 @@ export const getHistoryWeather = year => dispatch => {
     const tomorrowsDateInHistory =
         year + formatDate(tomorrowsMonth) + formatDate(tomorrowsDate);
 
-    //const getApiUrl = date =>
-    //    `${API_URL_BASE}${APIkey}/history_${date}/q/${state}/${city}.json`;
     const getApiUrl = date =>
-        `https://weather-chart-server.herokuapp.com/getHistoryData/${date}`;
-    console.log(11, todaysDateInHistory);
-    console.log(12, getApiUrl(todaysDateInHistory));
+        //    `${API_URL_BASE}${APIkey}/history_${date}/q/${state}/${city}.json`;
+        //    `https://weather-chart-server.herokuapp.com/getHistoryData/${date}`;
+        `${host}getHistoryData/${date}`;
+
+    //console.log(11, todaysDateInHistory);
+    //console.log(12, getApiUrl(todaysDateInHistory));
     axios
         .get(getApiUrl(todaysDateInHistory))
         .then(resToday => {
-            console.log(13, resToday);
+            //console.log(13, resToday);
             axios.get(getApiUrl(tomorrowsDateInHistory)).then(resTomorrow => {
                 const historyData = {
                     todayInHistory: { history: resToday.data.result[0] },

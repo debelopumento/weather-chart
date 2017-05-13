@@ -46,7 +46,7 @@ class ComparativeD3Graph extends PureComponent {
 
     if (currentData !== null && historyData !== null) {
       //time, start and end point of the timeline
-      console.log(200, historyData);
+      //console.log(200, historyData);
       const now = new Date();
       let today = now;
       today.setDate(now.getDate() - 0.29166666);
